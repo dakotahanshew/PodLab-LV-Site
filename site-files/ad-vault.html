@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased dark"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vegas Ad Vault — Unlock High-Performing Ads</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Michroma&amp;display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+fontFamily: {
+sans: ['Geist', 'sans-serif'],
+display: ['Michroma', 'sans-serif'],
+},
+colors: {
+brand: {
+400: '#fbbf24', // Amber 400
+500: '#f59e0b', // Amber 500 (Gold)
+600: '#d97706',
+800: '#92400e',
+900: '#78350f',
+glow: 'rgba(245, 158, 11, 0.15)',
+}
+},
+animation: {
+'fade-in': 'fadeIn 0.8s ease-out forwards',
+}
+}
+}
+}
+</script>
+<style>
+:root {
+--bg-dark: #020202;
+}
+body {
+background-color: var(--bg-dark);
+color: #a3a3a3;
+}
+/* Force stroke width for Lucide icons */
+iconify-icon svg {
+stroke-width: 1.5px !important;
+}
+/* Glass Panels */
+.glass-panel {
+background: rgba(10, 10, 10, 0.6);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.08);
+border-top: 1px solid rgba(255, 255, 255, 0.12);
+box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.3);
+}
+.glass-panel:hover {
+border-color: rgba(255, 255, 255, 0.15);
+background: rgba(15, 15, 15, 0.7);
+}
+.glass-panel-accent {
+background: rgba(245, 158, 11, 0.03);
+backdrop-filter: blur(8px);
+border: 1px solid rgba(245, 158, 11, 0.2);
+box-shadow: 0 0 30px -10px rgba(245, 158, 11, 0.1);
+}
+/* Form Inputs */
+.input-field {
+background: rgba(255, 255, 255, 0.03);
+border: 1px solid rgba(255, 255, 255, 0.1);
+color: white;
+padding: 0.75rem 1rem;
+border-radius: 0.5rem;
+width: 100%;
+transition: all 0.2s;
+outline: none;
+}
+.input-field:focus {
+border-color: #f59e0b;
+background: rgba(245, 158, 11, 0.05);
+box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.2);
+}
+.input-field::placeholder {
+color: #525252;
+}
+/* Custom Checkbox */
+.checkbox-wrapper input:checked + div {
+background-color: #f59e0b;
+border-color: #f59e0b;
+color: black;
+}
+/* Animations */
+@keyframes fadeInUp {
+0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+.animate-on-scroll { opacity: 0; }
+.animate-on-scroll.animate { animation: fadeInUp 0.8s ease-out forwards; }
+/* Shiny CTA Button */
+@property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+@property --gradient-shine { syntax: "<color>"; initial-value: #ffffff; inherits: false; }
+.shiny-cta {
+--gradient-angle: 0deg;
+--gradient-angle-offset: 0deg;
+--gradient-percent: 20%;
+--gradient-shine: #fcd34d;
+--gradient-dark: #78350f;
+position: relative;
+overflow: hidden;
+border-radius: 9999px;
+padding: 0.875rem 2.5rem;
+font-size: 0.875rem;
+line-height: 1.2;
+font-weight: 600;
+color: #ffffff;
+background: linear-gradient(to bottom, #d97706, #92400e) padding-box,
+conic-gradient(
+from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+transparent 0%,
+var(--gradient-dark) 5%,
+var(--gradient-shine) 15%,
+var(--gradient-dark) 30%,
+transparent 40%,
+transparent 100%
+) border-box;
+border: 1px solid transparent;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.4);
+transition: transform 0.2s, box-shadow 0.3s;
+cursor: pointer;
+animation: border-spin 3s linear infinite;
+}
+.shiny-cta:hover { box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+.shiny-cta:active { transform: scale(0.98); }
+@keyframes border-spin { to { --gradient-angle: 360deg; } }
+.heading-gradient { background: linear-gradient(110deg, #ffffff 45%, #fcd34d 55%, #fbbf24 80%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; animation: textShine 6s linear infinite; } @keyframes textShine { to { background-position: -200% center; } }
+/* Noise & Scroll */
+.bg-noise { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); pointer-events: none; z-index: -1; }
+html { scroll-behavior: smooth; }
+#cursor-glow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;background:radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(245, 158, 11, 0.06), transparent 40%);transition:opacity 0.3s;}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+entry.target.classList.add("animate");
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1 });
+document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+document.addEventListener('mousemove',e=>{const g=document.getElementById('cursor-glow');if(g){g.style.setProperty('--x',e.clientX+'px');g.style.setProperty('--y',e.clientY+'px');}});
+});
+</script></head>
+  <body class="relative min-h-screen overflow-x-hidden selection:bg-brand-500/20 selection:text-brand-500 bg-[#020202]">
+    
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-brand-500 opacity-20 blur-[100px]"></div>
+    </div>
+    <div id="cursor-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#020202]/80 backdrop-blur-xl">
+      <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-brand-500/10 border border-brand-500/20 text-brand-500">
+            <iconify-icon icon="lucide:vault" width="18"></iconify-icon>
+          </div>
+          <span class="text-sm tracking-tight text-white uppercase font-display">
+            Vegas Ad Vault
+          </span>
+        </div>
+        <a href="#access" class="text-xs font-semibold text-brand-500 uppercase tracking-wider hover:text-white transition-colors">
+          Get Instant Access
+        </a>
+      </div>
+    </nav>
+
+    <main class="relative z-10 pt-32 pb-24">
+      
+      <!-- SECTION 01 — HERO -->
+      <section class="relative min-h-[60vh] flex flex-col items-center justify-center w-full mb-12 px-6 text-center">
+        <div class="relative z-10 max-w-4xl flex flex-col items-center">
+          <div class="mb-6 animate-on-scroll">
+              <span class="text-xs text-brand-500 font-mono uppercase tracking-widest bg-brand-500/10 border border-brand-500/20 px-3 py-1.5 rounded-full shadow-[0_0_15px_-3px_rgba(245,158,11,0.3)]">
+                The Vault
+              </span>
+          </div>
+          <h1 class="animate-on-scroll font-display text-4xl md:text-6xl leading-[1.1] tracking-tight mb-8 heading-gradient drop-shadow-2xl">
+            Unlock the Vegas Ad Vault
+          </h1>
+          <p class="animate-on-scroll text-lg font-light leading-relaxed text-neutral-400 tracking-tight mb-10 max-w-2xl mx-auto">
+            A curated library of the highest-performing ads in Las Vegas — across service businesses, founders, and fast-growing local brands.
+          </p>
+          <div class="animate-on-scroll flex flex-col sm:flex-row items-center gap-6">
+            <a href="#access" class="shiny-cta inline-flex items-center justify-center">
+              <span>Get Instant Access</span>
+            </a>
+            <a href="#how-it-works" class="group flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
+                <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 group-hover:bg-brand-500/10 group-hover:border-brand-500/20 group-hover:text-brand-500 transition-all">
+                    <iconify-icon icon="lucide:play" width="12"></iconify-icon>
+                </div>
+                <span>Watch How the Vault Works</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 — WHY IT EXISTS -->
+      <section class="py-20 border-y border-white/5 bg-[#030303]/50">
+        <div class="mx-auto max-w-4xl px-6 text-center">
+            <div class="animate-on-scroll">
+                <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">The Problem</span>
+                <h2 class="font-display text-3xl md:text-4xl text-white mb-6 tracking-tight leading-tight">
+                    Want better ads? <br> Start with the ones that <span class="text-brand-500">already work</span>.
+                </h2>
+                <p class="text-neutral-400 text-lg leading-relaxed max-w-2xl mx-auto mb-12">
+                    Most founders guess what makes an ad convert. The Vault removes the guesswork by showing you real, verified top performers in Las Vegas.
+                </p>
+                
+                <!-- Grid of Contents -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-left">
+                    <div class="glass-panel p-4 rounded-lg flex items-center gap-3">
+                        <iconify-icon icon="lucide:message-square" class="text-brand-500 flex-shrink-0"></iconify-icon>
+                        <span class="text-sm text-neutral-200">Proven Messaging</span>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg flex items-center gap-3">
+                        <iconify-icon icon="lucide:anchor" class="text-brand-500 flex-shrink-0"></iconify-icon>
+                        <span class="text-sm text-neutral-200">Viral Hooks</span>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg flex items-center gap-3">
+                        <iconify-icon icon="lucide:percent" class="text-brand-500 flex-shrink-0"></iconify-icon>
+                        <span class="text-sm text-neutral-200">Converting Offers</span>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg flex items-center gap-3">
+                        <iconify-icon icon="lucide:palette" class="text-brand-500 flex-shrink-0"></iconify-icon>
+                        <span class="text-sm text-neutral-200">Visual Styles</span>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg flex items-center gap-3">
+                        <iconify-icon icon="lucide:layout-template" class="text-brand-500 flex-shrink-0"></iconify-icon>
+                        <span class="text-sm text-neutral-200">Winning Patterns</span>
+                    </div>
+                     <div class="glass-panel p-4 rounded-lg flex items-center gap-3">
+                        <iconify-icon icon="lucide:rocket" class="text-brand-500 flex-shrink-0"></iconify-icon>
+                        <span class="text-sm text-neutral-200">Industry Insights</span>
+                    </div>
+                </div>
+                
+                <p class="mt-8 text-sm text-brand-500 font-mono uppercase tracking-widest">
+                    This is the fastest way to improve your marketing.
+                </p>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 — WHAT’S INSIDE -->
+      <section class="py-24 mx-auto max-w-7xl px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <!-- Feature List -->
+              <div class="animate-on-scroll glass-panel p-8 md:p-10 rounded-2xl border-t border-brand-500/20 h-full">
+                  <h3 class="text-2xl font-display text-white mb-2">See What Top Vegas Brands Are Doing to Win</h3>
+                  <p class="text-sm text-neutral-500 mb-8">Comprehensive access to the creative strategies driving revenue.</p>
+                  
+                  <ul class="space-y-4">
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:video" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Winning Video Ads</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:image" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">High-Converting Image Ads</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:type" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Headline + Hook Library</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:bar-chart-2" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Offer Breakdown &amp; Analysis</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:copy" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Swipe Files &amp; Templates</span>
+                      </li>
+                  </ul>
+              </div>
+
+              <!-- Updates -->
+              <div class="animate-on-scroll glass-panel-accent p-8 md:p-10 rounded-2xl h-full flex flex-col justify-center">
+                  <div class="mb-4">
+                      <span class="text-xs font-bold bg-brand-500 text-black px-2 py-1 rounded uppercase tracking-wider">Fresh Drops</span>
+                  </div>
+                  <h3 class="text-2xl font-display text-white mb-4">Weekly Updates Included</h3>
+                  <p class="text-neutral-300 leading-relaxed mb-6">
+                      The ad landscape changes fast. We constantly monitor and update the vault with the latest winners, ensuring you never fall behind.
+                  </p>
+                  <div class="w-full h-px bg-brand-500/20 mb-6"></div>
+                  <div class="flex items-center gap-3 text-brand-400 text-sm">
+                      <iconify-icon icon="lucide:unlock" width="16"></iconify-icon>
+                      <span class="uppercase tracking-widest font-mono text-xs">Get Free Access Now</span>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 04 — WHO IT'S FOR -->
+      <section class="py-24 border-t border-white/5 relative overflow-hidden">
+          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.03),transparent_70%)] pointer-events-none"></div>
+          <div class="mx-auto max-w-4xl px-6 text-center animate-on-scroll relative z-10">
+              <h2 class="font-display text-3xl text-white mb-8">Who is the Vault for?</h2>
+              
+              <div class="flex flex-wrap justify-center gap-3">
+                  <span class="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-neutral-300 text-sm">Local Founders</span>
+                  <span class="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-neutral-300 text-sm">Agencies</span>
+                  <span class="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-neutral-300 text-sm">Media Buyers</span>
+                  <span class="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-neutral-300 text-sm">Creators</span>
+                  <span class="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-neutral-300 text-sm">Marketers</span>
+                  <span class="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-neutral-300 text-sm">Startup Teams</span>
+              </div>
+              
+              <p class="mt-8 text-lg text-brand-500 font-medium">
+                  If you want ads that convert in Vegas, you want this.
+              </p>
+          </div>
+      </section>
+
+      <!-- SECTION 05 — HOW THE VAULT HELPS -->
+      <section id="how-it-works" class="py-24 mx-auto max-w-7xl px-6">
+          <div class="text-center mb-16 animate-on-scroll">
+              <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">Benefits</span>
+              <h2 class="font-display text-3xl text-white">Stop Guessing. Start Modeling.</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <!-- Benefit 1 -->
+              <div class="animate-on-scroll glass-panel p-6 rounded-xl relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                  <div class="w-10 h-10 rounded bg-brand-500/10 text-brand-500 flex items-center justify-center mb-4">
+                      <iconify-icon icon="lucide:eye" width="20"></iconify-icon>
+                  </div>
+                  <h3 class="text-lg font-semibold text-white mb-2">Clarity</h3>
+                  <p class="text-sm text-neutral-400">Understand exactly what makes ads win in this market.</p>
+              </div>
+
+              <!-- Benefit 2 -->
+              <div class="animate-on-scroll glass-panel p-6 rounded-xl relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                   <div class="w-10 h-10 rounded bg-brand-500/10 text-brand-500 flex items-center justify-center mb-4">
+                      <iconify-icon icon="lucide:zap" width="20"></iconify-icon>
+                  </div>
+                  <h3 class="text-lg font-semibold text-white mb-2">Speed</h3>
+                  <p class="text-sm text-neutral-400">Produce better ads faster by modeling proven concepts.</p>
+              </div>
+
+              <!-- Benefit 3 -->
+              <div class="animate-on-scroll glass-panel p-6 rounded-xl relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                   <div class="w-10 h-10 rounded bg-brand-500/10 text-brand-500 flex items-center justify-center mb-4">
+                      <iconify-icon icon="lucide:target" width="20"></iconify-icon>
+                  </div>
+                  <h3 class="text-lg font-semibold text-white mb-2">Accuracy</h3>
+                  <p class="text-sm text-neutral-400">Lower your CPL and increase conversions with data-backed ideas.</p>
+              </div>
+
+              <!-- Benefit 4 -->
+              <div class="animate-on-scroll glass-panel p-6 rounded-xl relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                   <div class="w-10 h-10 rounded bg-brand-500/10 text-brand-500 flex items-center justify-center mb-4">
+                      <iconify-icon icon="lucide:trending-up" width="20"></iconify-icon>
+                  </div>
+                  <h3 class="text-lg font-semibold text-white mb-2">Scale</h3>
+                  <p class="text-sm text-neutral-400">Spend confidently with proven frameworks that scale.</p>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 06 — SOCIAL PROOF -->
+      <section class="py-24 bg-[#030303]/30 border-y border-white/5">
+          <div class="mx-auto max-w-6xl px-6">
+              <div class="text-center mb-12 animate-on-scroll">
+                   <h2 class="font-display text-2xl text-white">What Founders Say</h2>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div class="animate-on-scroll glass-panel p-8 rounded-xl border border-brand-500/10">
+                      <div class="flex text-brand-500 mb-4">
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                      </div>
+                      <p class="text-neutral-300 text-lg font-light leading-relaxed italic">
+                          “We improved our ads in one afternoon.”
+                      </p>
+                  </div>
+
+                  <div class="animate-on-scroll glass-panel p-8 rounded-xl border border-brand-500/10">
+                      <div class="flex text-brand-500 mb-4">
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                      </div>
+                      <p class="text-neutral-300 text-lg font-light leading-relaxed italic">
+                          “This saves us thousands in testing.”
+                      </p>
+                  </div>
+
+                  <div class="animate-on-scroll glass-panel p-8 rounded-xl border border-brand-500/10">
+                      <div class="flex text-brand-500 mb-4">
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                          <iconify-icon icon="lucide:star" width="16"></iconify-icon>
+                      </div>
+                      <p class="text-neutral-300 text-lg font-light leading-relaxed italic">
+                          “Pure gold for any local business.”
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 07 & 08 — WHAT YOU GET + OPT-IN -->
+      <section id="access" class="py-32 relative">
+        <!-- Glow effect behind -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,158,11,0.08),transparent_60%)] pointer-events-none blur-3xl"></div>
+        
+        <div class="mx-auto max-w-5xl px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left: What You Get -->
+                <div class="animate-on-scroll">
+                    <h2 class="font-display text-3xl text-white mb-6">Instant, Free, Ongoing Access</h2>
+                    <p class="text-neutral-400 mb-8">
+                        Join the most exclusive library of ad creatives in the city.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-neutral-300">
+                             <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+                             The Full Vault
+                        </li>
+                        <li class="flex items-center gap-3 text-neutral-300">
+                             <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+                             Weekly Updates
+                        </li>
+                        <li class="flex items-center gap-3 text-neutral-300">
+                             <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+                             Breakdown Videos
+                        </li>
+                        <li class="flex items-center gap-3 text-neutral-300">
+                             <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+                             Creative Templates
+                        </li>
+                         <li class="flex items-center gap-3 text-neutral-300">
+                             <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+                             Exclusive Insights
+                        </li>
+                        <li class="flex items-center gap-3 text-neutral-300">
+                             <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+                             Priority Access to Future Drops
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right: Opt-In Form -->
+                <div class="glass-panel-accent p-8 rounded-3xl border border-brand-500/30 animate-on-scroll shadow-[0_0_50px_-10px_rgba(245,158,11,0.1)]">
+                    <h3 class="font-display text-xl text-white mb-6 text-center">Grant Me Access</h3>
+                    <form class="space-y-4">
+                        <input type="text" placeholder="Full Name" class="input-field">
+                        <input type="email" placeholder="Email Address" class="input-field">
+                        <input type="text" placeholder="Business Name" class="input-field">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <select class="input-field appearance-none">
+                                <option value="" disabled="" selected="">Industry</option>
+                                <option class="text-black" value="service">Service</option>
+                                <option class="text-black" value="ecommerce">E-commerce</option>
+                                <option class="text-black" value="saas">SaaS</option>
+                                <option class="text-black" value="agency">Agency</option>
+                            </select>
+                            <select class="input-field appearance-none">
+                                <option value="" disabled="" selected="">Ad Spend</option>
+                                <option class="text-black" value="0">None yet</option>
+                                <option class="text-black" value="1k">&lt; $1k/mo</option>
+                                <option class="text-black" value="5k">$1k - $5k</option>
+                                <option class="text-black" value="10k">$5k+</option>
+                            </select>
+                        </div>
+
+                        <label class="checkbox-wrapper flex items-start gap-3 mt-4 cursor-pointer group">
+                            <input type="checkbox" class="hidden">
+                            <div class="w-5 h-5 border border-white/20 rounded flex items-center justify-center transition-colors flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="lucide:check" class="text-[10px]"></iconify-icon>
+                            </div>
+                            <span class="text-xs text-neutral-400 group-hover:text-neutral-300 transition-colors">
+                                Optional: I'd also like a Free Ad Audit to see where I'm leaking revenue.
+                            </span>
+                        </label>
+
+                        <button type="button" class="shiny-cta w-full flex justify-center py-4 mt-6 text-base">
+                            <span>Unlock the Vault</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 09 — FINAL CTA FOOTER -->
+      <section class="py-20 border-t border-white/5 bg-[#020202]">
+        <div class="mx-auto max-w-3xl px-6 text-center animate-on-scroll">
+            <h3 class="font-display text-2xl text-white mb-4">Ready to see what’s really working in Vegas?</h3>
+            <p class="text-neutral-400 mb-8">Unlock the city’s most powerful ad library — free.</p>
+            
+            <a href="#access" class="inline-flex items-center gap-2 text-brand-500 font-semibold uppercase tracking-wider text-sm hover:text-brand-400 transition-colors">
+                Unlock the Vegas Ad Vault
+                <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+            </a>
+            
+            <div class="mt-12 pt-8 border-t border-white/5 flex flex-col items-center">
+                 <p class="text-[10px] text-neutral-700">
+                    © 2024 Vegas Ad Vault. All rights reserved.
+                </p>
+            </div>
+        </div>
+      </section>
+
+    </main>
+  
+</body></html>

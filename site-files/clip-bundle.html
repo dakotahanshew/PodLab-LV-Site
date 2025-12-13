@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased dark"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Offer — PodLab</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Michroma&amp;display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+fontFamily: {
+sans: ['Geist', 'sans-serif'],
+display: ['Michroma', 'sans-serif'],
+},
+colors: {
+brand: {
+400: '#5cea4e',
+500: '#2ADD1B', // Neon Green
+600: '#22b515',
+800: '#187a10',
+900: '#104f0b',
+glow: 'rgba(42, 221, 27, 0.15)',
+}
+},
+animation: {
+'fade-in': 'fadeIn 0.8s ease-out forwards',
+}
+}
+}
+}
+</script>
+<style>
+:root {
+--bg-dark: #020202;
+}
+body {
+background-color: var(--bg-dark);
+color: #a3a3a3;
+}
+/* Force stroke width for Lucide icons */
+iconify-icon svg {
+stroke-width: 1.5px !important;
+}
+/* Glass Panels */
+.glass-panel {
+background: rgba(10, 10, 10, 0.6);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.08);
+border-top: 1px solid rgba(255, 255, 255, 0.12);
+box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.3);
+}
+.glass-panel:hover {
+border-color: rgba(255, 255, 255, 0.15);
+background: rgba(15, 15, 15, 0.7);
+}
+.glass-panel-accent {
+background: rgba(42, 221, 27, 0.03);
+backdrop-filter: blur(8px);
+border: 1px solid rgba(42, 221, 27, 0.2);
+box-shadow: 0 0 30px -10px rgba(42, 221, 27, 0.1);
+}
+/* Animations */
+@keyframes fadeInUp {
+0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+.animate-on-scroll { opacity: 0; }
+.animate-on-scroll.animate { animation: fadeInUp 0.8s ease-out forwards; }
+/* Shiny CTA Button */
+@property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+@property --gradient-shine { syntax: "<color>"; initial-value: #ffffff; inherits: false; }
+.shiny-cta {
+--gradient-angle: 0deg;
+--gradient-angle-offset: 0deg;
+--gradient-percent: 20%;
+--gradient-shine: #e0fccf;
+--gradient-dark: #104f0b;
+position: relative;
+overflow: hidden;
+border-radius: 9999px;
+padding: 0.875rem 2.5rem;
+font-size: 0.875rem;
+line-height: 1.2;
+font-weight: 600;
+color: #ffffff;
+background: linear-gradient(to bottom, #1d9612, #0f4a08) padding-box,
+conic-gradient(
+from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+transparent 0%,
+var(--gradient-dark) 5%,
+var(--gradient-shine) 15%,
+var(--gradient-dark) 30%,
+transparent 40%,
+transparent 100%
+) border-box;
+border: 1px solid transparent;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.4);
+transition: transform 0.2s, box-shadow 0.3s;
+cursor: pointer;
+animation: border-spin 3s linear infinite;
+}
+.shiny-cta:hover { box-shadow: 0 0 20px rgba(42, 221, 27, 0.4); }
+.shiny-cta:active { transform: scale(0.98); }
+@keyframes border-spin { to { --gradient-angle: 360deg; } }
+.heading-gradient { background: linear-gradient(110deg, #ffffff 45%, #e0fccf 55%, #a6f796 80%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; animation: textShine 6s linear infinite; } @keyframes textShine { to { background-position: -200% center; } }
+/* Noise & Scroll */
+.bg-noise { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); pointer-events: none; z-index: -1; }
+html { scroll-behavior: smooth; }
+#cursor-glow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;background:radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(42, 221, 27, 0.06), transparent 40%);transition:opacity 0.3s;}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+entry.target.classList.add("animate");
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1 });
+document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+document.addEventListener('mousemove',e=>{const g=document.getElementById('cursor-glow');if(g){g.style.setProperty('--x',e.clientX+'px');g.style.setProperty('--y',e.clientY+'px');}});
+});
+</script></head>
+  <body class="relative min-h-screen overflow-x-hidden selection:bg-brand-500/20 selection:text-brand-500 bg-[#020202]">
+    
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-brand-500 opacity-20 blur-[100px]"></div>
+    </div>
+    <div id="cursor-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#020202]/80 backdrop-blur-xl">
+      <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-brand-500/10 border border-brand-500/20 text-brand-500">
+            <iconify-icon icon="lucide:flask-conical" width="18"></iconify-icon>
+          </div>
+          <span class="text-sm tracking-tight text-white uppercase font-display">
+            PodLab
+          </span>
+        </div>
+        <a href="#offer" class="text-xs font-semibold text-brand-500 uppercase tracking-wider hover:text-white transition-colors">
+          Limited Event Offer
+        </a>
+      </div>
+    </nav>
+
+    <main class="relative z-10 pt-32 pb-24">
+      
+      <!-- SECTION 01 — HERO -->
+      <section class="relative min-h-[60vh] flex flex-col items-center justify-center w-full mb-12 px-6 text-center">
+        <div class="relative z-10 max-w-4xl flex flex-col items-center">
+          <div class="mb-6 animate-on-scroll">
+              <span class="text-xs text-brand-500 font-mono uppercase tracking-widest bg-brand-500/10 border border-brand-500/20 px-3 py-1.5 rounded-full shadow-[0_0_15px_-3px_rgba(42,221,27,0.3)]">
+                The Interview Upgrade
+              </span>
+          </div>
+          <h1 class="animate-on-scroll font-display text-4xl md:text-6xl leading-[1.1] tracking-tight mb-8 heading-gradient drop-shadow-2xl">
+            You Just Crushed It.<br>
+            Now Let’s Multiply the Impact.
+          </h1>
+          <p class="animate-on-scroll text-lg font-light leading-relaxed text-neutral-400 tracking-tight mb-10 max-w-2xl mx-auto">
+            You spent an hour sharing your story, your lessons, and your mission — all captured in crisp, cinematic 4K. Now imagine those moments transformed into scroll-stopping clips that build your authority and elevate your brand.
+          </p>
+          <div class="animate-on-scroll">
+            <a href="#offer" class="shiny-cta inline-flex items-center justify-center">
+              <span>Yes, Sauce Up My Clips</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 — THE OFFER HEADLINE -->
+      <section class="py-20 border-y border-white/5 bg-[#030303]/50">
+        <div class="mx-auto max-w-4xl px-6 text-center">
+            <div class="animate-on-scroll">
+                <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">The Offer</span>
+                <h2 class="font-display text-3xl md:text-4xl text-white mb-6 tracking-tight leading-tight">
+                    Turn This Interview Into 5 Viral-Ready Clips — Just <span class="text-brand-500">$500</span>
+                </h2>
+                <p class="text-neutral-400 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+                    We’ll take your best moments from today’s interview and turn them into 5 premium, polished, high-impact short-form videos designed to get views, build trust, and grow your audience.
+                </p>
+                <div class="glass-panel-accent inline-block px-6 py-3 rounded-lg border border-brand-500/30">
+                     <p class="text-sm text-brand-400 font-medium flex items-center gap-2">
+                        <iconify-icon icon="lucide:gift" width="16"></iconify-icon>
+                        Event Bonus: Your fully edited podcast episode — completely free.
+                     </p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 — WHAT’S INCLUDED -->
+      <section class="py-24 mx-auto max-w-7xl px-6">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <!-- Feature List -->
+              <div class="animate-on-scroll glass-panel p-8 md:p-10 rounded-2xl border-t border-brand-500/20 h-full">
+                  <h3 class="text-2xl font-display text-white mb-2">5 High-Impact Short-Form Clips</h3>
+                  <p class="text-sm text-neutral-500 mb-8">Optimized for Reels, TikTok, YouTube Shorts, and LinkedIn.</p>
+                  
+                  <ul class="space-y-4">
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:check" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Hook-driven captions</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:check" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Smooth, modern transitions</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:check" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Clean brand styling + your name/logo</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:check" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">Sound design + music</span>
+                      </li>
+                      <li class="flex items-center gap-4 text-white">
+                          <div class="h-8 w-8 rounded-full bg-brand-500/10 text-brand-500 flex items-center justify-center border border-brand-500/20">
+                             <iconify-icon icon="lucide:check" width="16"></iconify-icon>
+                          </div>
+                          <span class="text-neutral-300">CTA outro</span>
+                      </li>
+                  </ul>
+              </div>
+
+              <!-- Bonus -->
+              <div class="animate-on-scroll glass-panel-accent p-8 md:p-10 rounded-2xl h-full flex flex-col justify-center">
+                  <div class="mb-4">
+                      <span class="text-xs font-bold bg-brand-500 text-black px-2 py-1 rounded uppercase tracking-wider">Free Bonus</span>
+                  </div>
+                  <h3 class="text-2xl font-display text-white mb-4">Full Podcast Episode Edit</h3>
+                  <p class="text-neutral-300 leading-relaxed mb-6">
+                      Delivered polished and ready to post. We handle all cutting, syncing, cleanup, and color — you just upload and shine.
+                  </p>
+                  <div class="w-full h-px bg-brand-500/20 mb-6"></div>
+                  <div class="flex items-center gap-3 text-brand-400 text-sm">
+                      <iconify-icon icon="lucide:sparkles" width="16"></iconify-icon>
+                      <span class="uppercase tracking-widest font-mono text-xs">Value Included</span>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 04 — NO BRAINER -->
+      <section class="py-24 border-t border-white/5 relative overflow-hidden">
+          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(42,221,27,0.03),transparent_70%)] pointer-events-none"></div>
+          <div class="mx-auto max-w-3xl px-6 text-center animate-on-scroll relative z-10">
+              <h2 class="font-display text-3xl text-white mb-6">You already did the hard part.</h2>
+              <p class="text-lg text-neutral-400 font-light leading-relaxed">
+                  You showed up. You delivered. You shared wisdom that could impact thousands. Now let’s package your best moments so your audience can see, hear, and feel that impact — every single day.
+              </p>
+          </div>
+      </section>
+
+      <!-- SECTION 05 — HOW IT WORKS -->
+      <section class="py-24 mx-auto max-w-7xl px-6">
+          <div class="text-center mb-16 animate-on-scroll">
+              <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">Process</span>
+              <h2 class="font-display text-3xl text-white">How It Works</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Step 1 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-xl relative overflow-hidden group">
+                  <span class="text-6xl font-display text-white/5 absolute -top-2 -right-2 group-hover:text-brand-500/10 transition-colors">01</span>
+                  <h3 class="text-lg font-semibold text-white mb-3">You Pick the Moments</h3>
+                  <p class="text-sm text-neutral-400">Choose your favorite highlights from today’s conversation.</p>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-xl relative overflow-hidden group">
+                  <span class="text-6xl font-display text-white/5 absolute -top-2 -right-2 group-hover:text-brand-500/10 transition-colors">02</span>
+                  <h3 class="text-lg font-semibold text-white mb-3">We Sauce Them Up</h3>
+                  <p class="text-sm text-neutral-400">Our team handles editing, captions, audio, branding, pacing — everything.</p>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-xl relative overflow-hidden group">
+                   <span class="text-6xl font-display text-white/5 absolute -top-2 -right-2 group-hover:text-brand-500/10 transition-colors">03</span>
+                  <h3 class="text-lg font-semibold text-white mb-3">You Get 5 Clips + Your Episode</h3>
+                  <p class="text-sm text-neutral-400">Delivered within 7 days. Ready to post. Ready to grow.</p>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 06 — WHY IT MATTERS -->
+      <section class="py-24 bg-[#030303]/30 border-y border-white/5">
+          <div class="mx-auto max-w-5xl px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div class="animate-on-scroll">
+                  <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">The Value</span>
+                  <h2 class="font-display text-3xl text-white mb-6 leading-tight">
+                      People pay thousands for this type of content.
+                  </h2>
+                  <p class="text-neutral-400 mb-6">
+                      But you’ve already done 90% of the work just by being here. Your story deserves to travel further than the room you recorded it in.
+                  </p>
+                  <p class="text-white font-medium border-l-2 border-brand-500 pl-4 py-1">
+                      This is your chance to walk away with:
+                  </p>
+              </div>
+              
+              <div class="animate-on-scroll space-y-4">
+                  <div class="glass-panel p-4 rounded-lg flex items-center gap-4">
+                      <iconify-icon icon="lucide:video" class="text-brand-500"></iconify-icon>
+                      <span class="text-neutral-200 text-sm">Studio-quality 4K assets</span>
+                  </div>
+                  <div class="glass-panel p-4 rounded-lg flex items-center gap-4">
+                      <iconify-icon icon="lucide:scissors" class="text-brand-500"></iconify-icon>
+                      <span class="text-neutral-200 text-sm">Edited by pros</span>
+                  </div>
+                  <div class="glass-panel p-4 rounded-lg flex items-center gap-4">
+                      <iconify-icon icon="lucide:trending-up" class="text-brand-500"></iconify-icon>
+                      <span class="text-neutral-200 text-sm">Made for platforms that drive reach</span>
+                  </div>
+                  <div class="glass-panel p-4 rounded-lg flex items-center gap-4">
+                      <iconify-icon icon="lucide:target" class="text-brand-500"></iconify-icon>
+                      <span class="text-neutral-200 text-sm">Designed to grow your brand for months</span>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 07 — FINAL OFFER -->
+      <section id="offer" class="py-32 relative text-center">
+        <!-- Glow effect behind -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(42,221,27,0.08),transparent_60%)] pointer-events-none blur-3xl"></div>
+        
+        <div class="mx-auto max-w-2xl px-6 relative z-10">
+          <div class="glass-panel-accent p-10 rounded-3xl border border-brand-500/30 animate-on-scroll shadow-[0_0_50px_-10px_rgba(42,221,27,0.1)]">
+              
+              <h2 class="font-display text-4xl text-white mb-2">Buy 2, Get 3 Free</h2>
+              <div class="text-5xl font-bold text-brand-500 mb-6 tracking-tight">$500 <span class="text-lg font-normal text-neutral-400">Total</span></div>
+              
+              <div class="flex items-center justify-center gap-2 mb-8 text-sm text-neutral-300">
+                  <iconify-icon icon="lucide:plus" class="text-brand-500"></iconify-icon>
+                  <span>Full Podcast Episode Edit (Bonus)</span>
+              </div>
+
+              <p class="text-neutral-400 text-sm mb-10 max-w-sm mx-auto">
+                  That’s 5 videos + 1 full episode, filmed in 4K, professionally edited, packaged, and yours forever.
+              </p>
+
+              <div class="flex flex-col gap-4">
+                <a href="#" class="shiny-cta w-full flex justify-center py-4 text-base">
+                  <span>Yes, Sauce Up My Clips</span>
+                </a>
+                <p class="text-xs text-neutral-500">Limited to event guests. Once slots are gone, they’re gone.</p>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 08 — FOOTER TAGLINE -->
+      <section class="py-20 border-t border-white/5 bg-[#020202]">
+        <div class="mx-auto max-w-3xl px-6 text-center animate-on-scroll">
+            <h3 class="font-display text-2xl text-white mb-4">You created gold on camera today.</h3>
+            <p class="text-neutral-400 mb-8">Let’s make sure it doesn’t stay on a hard drive.</p>
+            
+            <div class="flex items-center justify-center gap-2 mb-12">
+                <div class="h-px bg-white/10 w-12"></div>
+                <span class="text-xs font-mono text-brand-500 uppercase tracking-widest">The PodLab LV Team</span>
+                <div class="h-px bg-white/10 w-12"></div>
+            </div>
+            
+            <p class="text-[10px] text-neutral-700">
+                © 2024 PodLab. All rights reserved.
+            </p>
+        </div>
+      </section>
+
+    </main>
+  
+</body></html>

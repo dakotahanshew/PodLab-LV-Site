@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased dark"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrandLab — Identity That Commands Authority.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Manrope:wght@200..800&amp;family=Michroma&amp;display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+fontFamily: {
+sans: ['Geist', 'sans-serif'],
+display: ['Michroma', 'sans-serif'],
+},
+colors: {
+brand: {
+400: '#5cea4e',
+500: '#2ADD1B', // Neon Green
+600: '#22b515',
+800: '#187a10',
+900: '#104f0b',
+glow: 'rgba(42, 221, 27, 0.15)',
+}
+},
+animation: {
+'fade-in': 'fadeIn 0.8s ease-out forwards',
+'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+}
+}
+}
+}
+</script>
+<style>
+:root {
+--bg-dark: #020202;
+--accent-glow: rgba(42, 221, 27, 0.15);
+--brand-primary: #2ADD1B;
+}
+body {
+background-color: var(--bg-dark);
+color: #a3a3a3;
+}
+/* Force stroke width for Lucide icons */
+iconify-icon svg {
+stroke-width: 1.5px !important;
+}
+.glass-panel {
+background: rgba(10, 10, 10, 0.4);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(42, 221, 27, 0.2);
+}
+.glass-panel-dark {
+background: rgba(5, 5, 5, 0.6);
+backdrop-filter: blur(8px);
+border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.grid-lines {
+background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+background-size: 40px 40px;
+}
+@keyframes fadeInUp {
+0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+.animate-on-scroll { opacity: 0; }
+.animate-on-scroll.animate { animation: fadeInUp 0.8s ease-out forwards; }
+/* --- SHINY CTA BUTTON EFFECT --- */
+@property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+@property --gradient-shine { syntax: "<color>"; initial-value: #ffffff; inherits: false; }
+.shiny-cta {
+--gradient-angle: 0deg;
+--gradient-angle-offset: 0deg;
+--gradient-percent: 20%;
+--gradient-shine: #e0fccf;
+--gradient-base: #2ADD1B;
+--gradient-dark: #104f0b;
+position: relative;
+overflow: hidden;
+border-radius: 9999px;
+padding: 0.875rem 2.5rem;
+font-size: 0.875rem;
+line-height: 1.2;
+font-weight: 600;
+color: #ffffff;
+background: linear-gradient(to bottom, #1d9612, #0f4a08) padding-box,
+conic-gradient(
+from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+transparent 0%,
+var(--gradient-dark) 5%,
+var(--gradient-shine) 15%,
+var(--gradient-dark) 30%,
+transparent 40%,
+transparent 100%
+) border-box;
+border: 1px solid transparent;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.4);
+outline: none;
+transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+cursor: pointer;
+font-family: inherit;
+z-index: 0;
+animation: border-spin 3s linear infinite;
+}
+.shiny-cta:hover {
+background: linear-gradient(to bottom, #22b515, #14610b) padding-box,
+conic-gradient(
+from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+transparent 0%,
+var(--gradient-dark) 5%,
+var(--gradient-shine) 15%,
+var(--gradient-dark) 30%,
+transparent 40%,
+transparent 100%
+) border-box;
+box-shadow: 0 0 20px rgba(42, 221, 27, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+@keyframes border-spin { to { --gradient-angle: 360deg; } }
+.shiny-cta:active { transform: scale(0.98); }
+.shiny-cta::before {
+content: '';
+pointer-events: none;
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+z-index: 0;
+--size: calc(100% - 2px);
+width: var(--size);
+height: var(--size);
+background: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 0.5px, transparent 0) padding-box;
+background-size: 4px 4px;
+mask-image: conic-gradient(from calc(var(--gradient-angle) + 45deg), black, transparent 10% 90%, black);
+border-radius: inherit;
+opacity: 0.3;
+}
+.shiny-cta-sm { padding: 0.5rem 1.25rem; font-size: 0.75rem; }
+.shiny-cta-secondary {
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.1);
+animation: none;
+box-shadow: none;
+}
+.shiny-cta-secondary:hover {
+background: rgba(255,255,255,0.1);
+border-color: rgba(255,255,255,0.2);
+box-shadow: none;
+}
+/* Accordion Styles */
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] summary ~ * { animation: sweep .5s ease-in-out; }
+@keyframes sweep { 0% {opacity: 0; transform: translateY(-10px)} 100% {opacity: 1; transform: translateY(0)} }
+.heading-gradient { background: linear-gradient(110deg, #ffffff 45%, #e0fccf 55%, #a6f796 80%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; animation: textShine 6s linear infinite; } @keyframes textShine { to { background-position: -200% center; } }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+entry.target.classList.add("animate");
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1 });
+document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+});
+</script>
+<style>
+#cursor-glow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;background:radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(42, 221, 27, 0.08), transparent 40%);transition:opacity 0.3s;}
+</style>
+<script>
+document.addEventListener('mousemove',e=>{const g=document.getElementById('cursor-glow');if(g){g.style.setProperty('--x',e.clientX+'px');g.style.setProperty('--y',e.clientY+'px');}});
+</script></head>
+  <body class="relative min-h-screen overflow-x-hidden selection:bg-brand-500/20 selection:text-brand-500">
+    <div id="cursor-glow"></div>
+    <div class="aura-background-component fixed top-0 w-full h-full -z-10 hue-rotate-[240deg]" data-alpha-mask="80" style="mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)">
+      <div data-us-project="1bY8o6HVTI1oxJxuCJEG" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+      <script type="text/javascript">
+        !function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.33/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();
+      </script>
+    </div>
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute inset-0 grid-lines opacity-30"></div>
+      <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,_var(--accent-glow),_transparent_70%)] opacity-40 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,_rgba(42,221,27,0.1),_transparent_70%)] opacity-30 blur-3xl"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#020202]/80 backdrop-blur-xl">
+      <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-brand-500/10 border border-brand-500/20 text-brand-500">
+            <iconify-icon icon="lucide:mic-2" width="18"></iconify-icon>
+          </div>
+          <span class="text-sm tracking-tight text-white uppercase font-display">
+            PodLab
+          </span>
+        </div>
+        <div class="hidden md:flex items-center gap-8 text-xs font-medium text-neutral-400">
+          <a href="#brandlab" class="hover:text-white transition-colors">
+            BrandLab
+          </a>
+          <a href="#why-it-matters" class="hover:text-white transition-colors">
+            Why It Matters
+          </a>
+          <a href="#process" class="hover:text-white transition-colors">
+            Process
+          </a>
+          <a href="#faq" class="hover:text-white transition-colors">
+            FAQ
+          </a>
+        </div>
+        <button class="shiny-cta shiny-cta-sm">
+          <span class="flex items-center gap-2">
+            Book Call
+            <iconify-icon icon="lucide:arrow-right" width="12" class="opacity-70 group-hover:opacity-100"></iconify-icon>
+          </span>
+        </button>
+      </div>
+    </nav>
+
+    <main class="relative z-10 pt-32 pb-24">
+      
+      <!-- SECTION 01 — HERO -->
+      <section class="relative min-h-[85vh] flex flex-col items-center justify-center w-full mb-12 px-6">
+        <div class="relative z-10 max-w-5xl text-center flex flex-col items-center">
+          <h1 class="animate-on-scroll font-display text-5xl md:text-7xl leading-[0.95] tracking-tight mb-8 heading-gradient">
+            BrandLab: Identity That
+            <br>
+            Commands Authority
+          </h1>
+          <p class="animate-on-scroll text-lg font-light leading-relaxed text-neutral-400 tracking-tight mb-10 max-w-2xl">
+            Clarity becomes power when it’s visual. BrandLab turns your message into a premium identity that positions you as the trusted leader in your market.
+          </p>
+          <div class="animate-on-scroll flex flex-col sm:flex-row gap-6 items-center justify-center w-full sm:w-auto">
+            <button class="shiny-cta w-full sm:w-auto justify-center flex">
+              <span>Book My 15-Minute Call</span>
+            </button>
+            <a href="#" class="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2 group">
+              Watch the BrandLab Explainer 
+              <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+            </a>
+          </div>
+
+          <!-- Video Thumbnail Placeholder -->
+          <div class="animate-on-scroll mt-16 w-full max-w-2xl relative group cursor-pointer">
+            <div class="absolute -inset-1 bg-gradient-to-r from-brand-500/20 to-brand-800/20 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <div class="relative aspect-video rounded-xl bg-[#0a0a0a] border border-white/10 overflow-hidden flex items-center justify-center group-hover:border-brand-500/30 transition-all duration-300">
+              <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(42,221,27,0.1),transparent_50%)]"></div>
+               <div class="flex items-center gap-2 text-neutral-500 group-hover:text-brand-500 transition-colors">
+                 <iconify-icon icon="lucide:play-circle" width="48" class="opacity-80"></iconify-icon>
+               </div>
+               <span class="absolute bottom-4 left-4 text-xs font-mono text-neutral-500 uppercase tracking-widest bg-black/50 backdrop-blur px-2 py-1 rounded border border-white/5">
+                 Visual Authority
+               </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 — THE PROBLEM -->
+      <section class="py-24 bg-[#050505] border-y border-brand-800/10">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="text-center mb-16 max-w-3xl mx-auto">
+                <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">The Problem</span>
+                <h2 class="animate-on-scroll font-display text-3xl text-white mb-6 tracking-tight">If you want to scale, looking “good enough” is no longer good enough.</h2>
+                <p class="animate-on-scroll text-neutral-400 leading-relaxed">Your brand is the first filter your audience uses to determine whether they trust you, buy from you, or compare you to someone cheaper.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Symptom Cards -->
+                <div class="animate-on-scroll group p-6 rounded-xl bg-white/[0.02] border border-white/5 border-t-2 border-t-brand-500/50 hover:bg-white/[0.04] transition-all">
+                    <div class="text-brand-500 mb-4 opacity-80"><iconify-icon icon="lucide:trending-down" width="24"></iconify-icon></div>
+                    <h3 class="text-white font-medium mb-2">Performance Mismatch</h3>
+                    <p class="text-xs text-neutral-500">Their brand doesn’t match their level of performance.</p>
+                </div>
+                
+                <div class="animate-on-scroll group p-6 rounded-xl bg-white/[0.02] border border-white/5 border-t-2 border-t-brand-500/50 hover:bg-white/[0.04] transition-all">
+                    <div class="text-brand-500 mb-4 opacity-80"><iconify-icon icon="lucide:image-off" width="24"></iconify-icon></div>
+                    <h3 class="text-white font-medium mb-2">Inconsistent Visuals</h3>
+                    <p class="text-xs text-neutral-500">Their visuals feel inconsistent or outdated.</p>
+                </div>
+
+                <div class="animate-on-scroll group p-6 rounded-xl bg-white/[0.02] border border-white/5 border-t-2 border-t-brand-500/50 hover:bg-white/[0.04] transition-all">
+                    <div class="text-brand-500 mb-4 opacity-80"><iconify-icon icon="lucide:shield-alert" width="24"></iconify-icon></div>
+                    <h3 class="text-white font-medium mb-2">Lacking Authority</h3>
+                    <p class="text-xs text-neutral-500">Their identity lacks authority and leadership.</p>
+                </div>
+
+                <div class="animate-on-scroll group p-6 rounded-xl bg-white/[0.02] border border-white/5 border-t-2 border-t-brand-500/50 hover:bg-white/[0.04] transition-all">
+                    <div class="text-brand-500 mb-4 opacity-80"><iconify-icon icon="lucide:users" width="24"></iconify-icon></div>
+                    <h3 class="text-white font-medium mb-2">Interchangeable</h3>
+                    <p class="text-xs text-neutral-500">Their market sees them as interchangeable.</p>
+                </div>
+            </div>
+
+            <div class="text-center animate-on-scroll">
+                 <p class="text-xl font-medium text-white mb-2">BrandLab changes that.</p>
+                 <p class="text-neutral-400 font-light">We build an identity engineered for trust, scale, and conversion — not aesthetics.</p>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 — WHAT BRANDLAB IS -->
+      <section id="brandlab" class="py-24 mx-auto max-w-5xl px-6">
+        <div class="flex flex-col md:flex-row gap-12 items-center">
+            <div class="flex-1 animate-on-scroll">
+                <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">What BrandLab Is</span>
+                <h2 class="font-display text-3xl md:text-4xl text-white mb-6 tracking-tight">
+                    A Premium Identity Built for <span class="text-brand-500">High-Performing Founders</span>
+                </h2>
+                <div class="space-y-6 text-neutral-400 font-light leading-relaxed mb-8">
+                    <p>
+                        BrandLab translates your AssetsLab clarity into a visual identity system built for authority, trust, and rapid growth.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3"><iconify-icon icon="lucide:check" class="text-brand-500 mt-1"></iconify-icon> A complete visual identity system</li>
+                        <li class="flex items-start gap-3"><iconify-icon icon="lucide:check" class="text-brand-500 mt-1"></iconify-icon> Logos, typography, color palettes, layouts</li>
+                        <li class="flex items-start gap-3"><iconify-icon icon="lucide:check" class="text-brand-500 mt-1"></iconify-icon> Social and content templates</li>
+                        <li class="flex items-start gap-3"><iconify-icon icon="lucide:check" class="text-brand-500 mt-1"></iconify-icon> Brand voice &amp; messaging guide</li>
+                        <li class="flex items-start gap-3"><iconify-icon icon="lucide:check" class="text-brand-500 mt-1"></iconify-icon> Creative direction for website &amp; video</li>
+                        <li class="flex items-start gap-3"><iconify-icon icon="lucide:check" class="text-brand-500 mt-1"></iconify-icon> A 30–50 page brand guide your team can use forever</li>
+                    </ul>
+                </div>
+                <div class="p-4 bg-white/[0.03] border-l-2 border-brand-500 rounded-r-lg">
+                    <p class="text-white font-medium text-sm">
+                        This isn’t “branding.” This is identity engineering.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Simple visual stack -->
+            <div class="w-full md:w-96 animate-on-scroll">
+                <div class="relative space-y-3">
+                    <div class="glass-panel p-6 rounded-xl border border-brand-500/30 shadow-[0_0_30px_rgba(42,221,27,0.1)] z-30 relative transform hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <iconify-icon icon="lucide:book-open" class="text-brand-500" width="24"></iconify-icon>
+                            <span class="text-[10px] text-neutral-500 font-mono uppercase">Deliverable</span>
+                        </div>
+                        <h4 class="text-white font-display text-lg mb-1">Brand Guide</h4>
+                        <p class="text-xs text-neutral-500">30-50 Pages of Rules &amp; Systems</p>
+                    </div>
+
+                    <div class="glass-panel-dark p-6 rounded-xl border border-white/10 z-20 relative transform translate-x-4 -translate-y-16 scale-95 opacity-80">
+                        <div class="flex justify-between items-start mb-4">
+                            <iconify-icon icon="lucide:layout-template" class="text-neutral-400" width="24"></iconify-icon>
+                        </div>
+                        <h4 class="text-neutral-200 font-display text-lg mb-1">Visual Assets</h4>
+                        <p class="text-xs text-neutral-500">Logos, Patterns, Typography</p>
+                    </div>
+
+                    <div class="glass-panel-dark p-6 rounded-xl border border-white/5 z-10 relative transform translate-x-8 -translate-y-32 scale-90 opacity-60">
+                         <div class="flex justify-between items-start mb-4">
+                            <iconify-icon icon="lucide:monitor" class="text-neutral-500" width="24"></iconify-icon>
+                        </div>
+                        <h4 class="text-neutral-300 font-display text-lg mb-1">Direction</h4>
+                        <p class="text-xs text-neutral-600">Web &amp; Video Strategy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 04 — WHY BRANDLAB MATTERS -->
+      <section id="why-it-matters" class="py-24 mx-auto max-w-7xl px-6 relative bg-[#050505] border-y border-brand-800/10">
+          <div class="text-center mb-16 relative z-10">
+              <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">Why BrandLab Matters</span>
+              <h2 class="animate-on-scroll font-display text-3xl md:text-4xl heading-gradient mb-6 tracking-tight">Authority is a design decision.</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto relative z-10">
+              <!-- Card 1 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-2xl hover:border-brand-500/30 transition-all duration-300 group">
+                  <iconify-icon icon="lucide:crown" width="32" class="text-brand-500 mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></iconify-icon>
+                  <h3 class="text-lg font-semibold text-white mb-3">Positioning</h3>
+                  <p class="text-sm text-neutral-400 leading-relaxed font-light">Your brand communicates leadership instantly.</p>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-2xl hover:border-brand-500/30 transition-all duration-300 group">
+                  <iconify-icon icon="lucide:trending-up" width="32" class="text-brand-500 mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></iconify-icon>
+                  <h3 class="text-lg font-semibold text-white mb-3">Perceived Value</h3>
+                  <p class="text-sm text-neutral-400 leading-relaxed font-light">Premium identity increases pricing power.</p>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-2xl hover:border-brand-500/30 transition-all duration-300 group">
+                  <iconify-icon icon="lucide:layout-grid" width="32" class="text-brand-500 mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></iconify-icon>
+                  <h3 class="text-lg font-semibold text-white mb-3">Consistency</h3>
+                  <p class="text-sm text-neutral-400 leading-relaxed font-light">All touchpoints align perfectly.</p>
+              </div>
+
+              <!-- Card 4 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-2xl hover:border-brand-500/30 transition-all duration-300 group">
+                  <iconify-icon icon="lucide:zap" width="32" class="text-brand-500 mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></iconify-icon>
+                  <h3 class="text-lg font-semibold text-white mb-3">Conversion Power</h3>
+                  <p class="text-sm text-neutral-400 leading-relaxed font-light">People trust and buy faster.</p>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 05 — THE PROCESS -->
+      <section id="process" class="py-24 mx-auto max-w-5xl px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+            <div class="animate-on-scroll sticky top-32">
+                <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">The Process</span>
+                <h2 class="font-display text-4xl heading-gradient mb-6 tracking-tight">Identity Engineering</h2>
+                <p class="text-neutral-400 font-light mb-8">From abstract strategy to concrete assets. We build your visual empire in five steps.</p>
+                <button class="shiny-cta"><span>Book My 15-Minute Call</span></button>
+            </div>
+            
+            <div class="animate-on-scroll relative pl-8 border-l border-white/10 space-y-12">
+                <!-- Step 1 -->
+                <div class="relative">
+                    <div class="absolute -left-[37px] top-1 h-4 w-4 rounded-full bg-[#020202] border border-brand-500 shadow-[0_0_10px_rgba(42,221,27,0.5)]"></div>
+                    <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-1 block">Phase 01</span>
+                    <h3 class="text-xl text-white font-semibold mb-2">Discovery &amp; Research</h3>
+                    <p class="text-sm text-neutral-400 leading-relaxed">We map your category and identify your visual advantage.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="relative">
+                    <div class="absolute -left-[37px] top-1 h-4 w-4 rounded-full bg-[#020202] border border-brand-500 shadow-[0_0_10px_rgba(42,221,27,0.5)]"></div>
+                    <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-1 block">Phase 02</span>
+                    <h3 class="text-xl text-white font-semibold mb-2">Creative Direction</h3>
+                    <p class="text-sm text-neutral-400 leading-relaxed">Mood, tone, style — established with intention.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="relative">
+                    <div class="absolute -left-[37px] top-1 h-4 w-4 rounded-full bg-[#020202] border border-brand-500 shadow-[0_0_10px_rgba(42,221,27,0.5)]"></div>
+                    <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-1 block">Phase 03</span>
+                    <h3 class="text-xl text-white font-semibold mb-2">Identity Development</h3>
+                    <p class="text-sm text-neutral-400 leading-relaxed">Logos, typography, colors, and structure built to win.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="relative">
+                    <div class="absolute -left-[37px] top-1 h-4 w-4 rounded-full bg-[#020202] border border-brand-500 shadow-[0_0_10px_rgba(42,221,27,0.5)]"></div>
+                    <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-1 block">Phase 04</span>
+                    <h3 class="text-xl text-white font-semibold mb-2">Brand Guide Creation</h3>
+                    <p class="text-sm text-neutral-400 leading-relaxed">Your full identity system packaged into a cohesive guide.</p>
+                </div>
+                <!-- Step 5 -->
+                <div class="relative">
+                    <div class="absolute -left-[37px] top-1 h-4 w-4 rounded-full bg-[#020202] border border-brand-500 shadow-[0_0_10px_rgba(42,221,27,0.5)]"></div>
+                    <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-1 block">Phase 05</span>
+                    <h3 class="text-xl text-white font-semibold mb-2">Market Activation</h3>
+                    <p class="text-sm text-neutral-400 leading-relaxed">Direction for using your new brand across website, video, and content.</p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 06 — WHO IT'S FOR -->
+      <section class="py-16 border-y border-brand-800/10 bg-[#030303]">
+          <div class="mx-auto max-w-4xl px-6">
+              <div class="text-center mb-10">
+                  <h3 class="animate-on-scroll text-lg font-medium text-white mb-2">You’re the right fit for BrandLab if:</h3>
+              </div>
+              <div class="animate-on-scroll flex flex-wrap justify-center gap-4">
+                  <div class="px-6 py-3 rounded-full border border-white/5 bg-white/[0.02] text-sm text-neutral-300 flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-brand-500"></iconify-icon> You’ve outgrown your current brand</div>
+                  <div class="px-6 py-3 rounded-full border border-white/5 bg-white/[0.02] text-sm text-neutral-300 flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-brand-500"></iconify-icon> You want to look like the category leader</div>
+                  <div class="px-6 py-3 rounded-full border border-white/5 bg-white/[0.02] text-sm text-neutral-300 flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-brand-500"></iconify-icon> You need premium visuals to match delivery</div>
+                  <div class="px-6 py-3 rounded-full border border-white/5 bg-white/[0.02] text-sm text-neutral-300 flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-brand-500"></iconify-icon> You want consistency across every channel</div>
+                  <div class="px-6 py-3 rounded-full border border-white/5 bg-white/[0.02] text-sm text-neutral-300 flex items-center gap-2"><iconify-icon icon="lucide:check" class="text-brand-500"></iconify-icon> You want a brand that closes deals before you speak</div>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 07 — PROOF -->
+      <section class="py-24 mx-auto max-w-6xl px-6">
+          <div class="text-center mb-12 animate-on-scroll">
+              <h2 class="font-display text-3xl text-white mb-4 tracking-tight">Real brands. Real authority. Real scale.</h2>
+              <p class="text-neutral-400">Every identity we build is designed for long-term differentiation and trust.</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Before -->
+              <div class="animate-on-scroll p-8 rounded-2xl bg-[#0a0a0a] border border-red-500/20 relative overflow-hidden group">
+                  <div class="absolute top-0 left-0 w-1 h-full bg-red-900/50"></div>
+                  <span class="text-red-500 text-xs font-mono uppercase tracking-widest mb-4 block">The "Nice to Have"</span>
+                  <div class="flex items-center gap-4 mb-4 text-neutral-500">
+                      <div class="h-10 w-10 bg-white/5 rounded-full flex items-center justify-center"><iconify-icon icon="lucide:image-minus"></iconify-icon></div>
+                      <div class="text-sm font-mono">Generic Template</div>
+                  </div>
+                  <p class="text-neutral-400 text-sm leading-relaxed mb-4">Aesthetics that look like everyone else. No strategic backing. "Fluff" that doesn't sell.</p>
+              </div>
+
+              <!-- After -->
+              <div class="animate-on-scroll p-8 rounded-2xl bg-[#0a0a0a] border border-brand-500/20 relative overflow-hidden group">
+                  <div class="absolute top-0 left-0 w-1 h-full bg-brand-500"></div>
+                  <div class="absolute top-0 right-0 p-3"><iconify-icon icon="lucide:check-circle" class="text-brand-500" width="24"></iconify-icon></div>
+                  <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">The Strategic Asset</span>
+                  <div class="flex items-center gap-4 mb-4 text-white">
+                      <div class="h-10 w-10 bg-brand-500/10 rounded-full flex items-center justify-center text-brand-500 border border-brand-500/20"><iconify-icon icon="lucide:diamond"></iconify-icon></div>
+                      <div class="text-sm font-mono">Engineered Identity</div>
+                  </div>
+                  <p class="text-neutral-300 text-sm leading-relaxed mb-4">Systems that sell. Visuals that command premiums. An identity that works as hard as you do.</p>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 08 — FAQ -->
+      <section id="faq" class="py-24 mx-auto max-w-3xl px-6 border-t border-brand-800/10">
+          <h2 class="animate-on-scroll text-center font-display text-2xl text-white mb-12">Frequently Asked Questions</h2>
+          <div class="animate-on-scroll space-y-4">
+              <!-- Q1 -->
+              <details class="group glass-panel-dark rounded-xl p-4 cursor-pointer">
+                  <summary class="flex justify-between items-center font-medium text-white">
+                      How long does BrandLab take?
+                      <iconify-icon icon="lucide:chevron-down" class="text-neutral-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                  </summary>
+                  <p class="text-neutral-400 text-sm mt-4 leading-relaxed pl-1">Typically 2–3 weeks. We move efficiently to get your new identity in the market.</p>
+              </details>
+              <!-- Q2 -->
+              <details class="group glass-panel-dark rounded-xl p-4 cursor-pointer">
+                  <summary class="flex justify-between items-center font-medium text-white">
+                      Is everything custom?
+                      <iconify-icon icon="lucide:chevron-down" class="text-neutral-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                  </summary>
+                  <p class="text-neutral-400 text-sm mt-4 leading-relaxed pl-1">Yes — every identity is built from scratch based on your strategy and AssetsLab insights. No templates.</p>
+              </details>
+              <!-- Q3 -->
+              <details class="group glass-panel-dark rounded-xl p-4 cursor-pointer">
+                  <summary class="flex justify-between items-center font-medium text-white">
+                      Will I get full files?
+                      <iconify-icon icon="lucide:chevron-down" class="text-neutral-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                  </summary>
+                  <p class="text-neutral-400 text-sm mt-4 leading-relaxed pl-1">Yes — we deliver the complete system including source files (vector logos, type files, design assets) so you have full ownership.</p>
+              </details>
+          </div>
+      </section>
+
+      <!-- SECTION 09 — FINAL CTA -->
+      <section class="py-32 relative text-center border-t border-brand-800/10">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(42,221,27,0.05),transparent_60%)] pointer-events-none blur-3xl"></div>
+        <div class="mx-auto max-w-3xl px-6 relative z-10">
+          <h2 class="animate-on-scroll font-display text-4xl md:text-5xl heading-gradient mb-8 tracking-tight">
+            Ready for a brand that
+            <br>
+            makes scaling easier?
+          </h2>
+          <p class="animate-on-scroll text-neutral-400 mb-10 font-light">
+            BrandLab turns your clarity into an identity that commands trust and authority.
+          </p>
+          <div class="animate-on-scroll flex flex-col sm:flex-row justify-center gap-6 items-center">
+            <button class="shiny-cta">
+              <span>Book My 15-Minute Call</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand-800/20 bg-[#020202] py-12">
+      <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2">
+          <iconify-icon icon="lucide:mic-2" class="text-neutral-600" width="16"></iconify-icon>
+          <span class="text-xs font-semibold text-neutral-500 uppercase tracking-widest">
+            PodLab Systems
+          </span>
+        </div>
+        <p class="text-[10px] text-neutral-700">
+          © 2024 PodLab. All rights reserved. Precision Engineered.
+        </p>
+      </div>
+    </footer>
+  
+</body></html>
