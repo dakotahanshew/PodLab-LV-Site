@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased dark"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PodLab — Record Once. Sell Forever.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Manrope:wght@200..800&amp;family=Michroma&amp;display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+fontFamily: {
+sans: ['Geist', 'sans-serif'],
+display: ['Michroma', 'sans-serif'],
+},
+colors: {
+brand: {
+400: '#5cea4e',
+500: '#2ADD1B', // Neon Green
+600: '#22b515',
+800: '#187a10',
+900: '#104f0b',
+glow: 'rgba(42, 221, 27, 0.15)',
+}
+},
+animation: {
+'fade-in': 'fadeIn 0.8s ease-out forwards',
+}
+}
+}
+}
+</script>
+<style>
+:root {
+--bg-dark: #020202;
+--accent-glow: rgba(42, 221, 27, 0.15);
+}
+body {
+background-color: var(--bg-dark);
+color: #a3a3a3;
+}
+iconify-icon svg {
+stroke-width: 1.5px !important;
+}
+.glass-panel {
+background: rgba(10, 10, 10, 0.6);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.nav-dropdown {
+background: rgba(5, 5, 5, 0.95);
+backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.08);
+box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+}
+.grid-lines {
+background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+background-size: 40px 40px;
+}
+@keyframes fadeInUp {
+0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+.animate-on-scroll { opacity: 0; }
+.animate-on-scroll.animate { animation: fadeInUp 0.8s ease-out forwards; }
+/* CTA Button */
+@property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+.shiny-cta {
+--gradient-angle: 0deg;
+--gradient-shine: #e0fccf;
+--gradient-base: #2ADD1B;
+--gradient-dark: #104f0b;
+position: relative;
+overflow: hidden;
+border-radius: 9999px;
+padding: 0.875rem 2.5rem;
+font-size: 0.875rem;
+font-weight: 600;
+color: #ffffff;
+background: linear-gradient(to bottom, #1d9612, #0f4a08) padding-box,
+conic-gradient(from var(--gradient-angle), transparent 0%, var(--gradient-dark) 5%, var(--gradient-shine) 15%, var(--gradient-dark) 30%, transparent 40%, transparent 100%) border-box;
+border: 1px solid transparent;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+transition: transform 0.2s;
+cursor: pointer;
+animation: border-spin 3s linear infinite;
+}
+.shiny-cta:hover { box-shadow: 0 0 20px rgba(42, 221, 27, 0.4); }
+.shiny-cta:active { transform: scale(0.98); }
+@keyframes border-spin { to { --gradient-angle: 360deg; } }
+.shiny-cta-sm { padding: 0.5rem 1.25rem; font-size: 0.75rem; }
+.heading-gradient { background: linear-gradient(110deg, #ffffff 45%, #e0fccf 55%, #a6f796 80%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; animation: textShine 6s linear infinite; } @keyframes textShine { to { background-position: -200% center; } }
+/* Dropdown Logic */
+.group:hover .dropdown-menu {
+display: block;
+animation: fadeScale 0.2s ease-out forwards;
+}
+@keyframes fadeScale {
+from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* Mobile Menu */
+#mobile-menu { transition: transform 0.3s ease-in-out; }
+#mobile-menu.open { transform: translateX(0); }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+entry.target.classList.add("animate");
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1 });
+document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+// Mobile menu toggle
+const btn = document.getElementById('mobile-btn');
+const menu = document.getElementById('mobile-menu');
+const close = document.getElementById('close-menu');
+btn.addEventListener('click', () => { menu.classList.remove('translate-x-full'); menu.classList.add('translate-x-0'); });
+close.addEventListener('click', () => { menu.classList.add('translate-x-full'); menu.classList.remove('translate-x-0'); });
+});
+</script></head>
+  <body class="relative min-h-screen overflow-x-hidden selection:bg-brand-500/20 selection:text-brand-500">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#020202]/80 backdrop-blur-xl">
+      <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 z-50">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-brand-500/10 border border-brand-500/20 text-brand-500">
+            <iconify-icon icon="lucide:mic-2" width="18"></iconify-icon>
+          </div>
+          <span class="text-sm tracking-tight text-white uppercase font-display">PodLab</span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-1">
+          <a href="#" class="px-4 py-2 text-xs font-medium text-neutral-400 hover:text-white transition-colors rounded-full hover:bg-white/5">Home</a>
+          
+          <!-- Services Dropdown -->
+          <div class="group relative">
+            <button class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-neutral-400 hover:text-white transition-colors rounded-full hover:bg-white/5 focus:outline-none">
+              Services
+              <iconify-icon icon="lucide:chevron-down" width="10" class="opacity-50 group-hover:rotate-180 transition-transform"></iconify-icon>
+            </button>
+            
+            <!-- Dropdown Content -->
+            <div class="dropdown-menu hidden absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[280px]">
+              <div class="nav-dropdown rounded-xl overflow-hidden p-2">
+                <!-- Business Growth System Group -->
+                <div class="px-3 py-2">
+                  <div class="flex items-center gap-2 text-[10px] uppercase tracking-wider text-brand-500 font-semibold mb-2">
+                    <iconify-icon icon="lucide:layers" width="12"></iconify-icon>
+                    Business Growth System
+                  </div>
+                  <div class="space-y-0.5 border-l border-white/10 ml-1.5 pl-2">
+                    <a href="#assets" class="block px-3 py-1.5 text-xs text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Assets Lab</a>
+                    <a href="#brand" class="block px-3 py-1.5 text-xs text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Brand Lab</a>
+                    <a href="#site" class="block px-3 py-1.5 text-xs text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Site Lab</a>
+                    <a href="#video" class="block px-3 py-1.5 text-xs text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Video Sales Lab</a>
+                    <a href="#expansion" class="block px-3 py-1.5 text-xs text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Expansion Lab</a>
+                  </div>
+                </div>
+                
+                <div class="h-px bg-white/5 my-1 mx-2"></div>
+                
+                <!-- Other Services -->
+                <div class="space-y-0.5 p-1">
+                  <a href="#studio" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-neutral-300 hover:text-white hover:bg-white/5 rounded-md transition-colors">
+                    <iconify-icon icon="lucide:mic-2" width="14" class="text-neutral-500"></iconify-icon>
+                    Studio Time
+                  </a>
+                  <a href="#ads" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-neutral-300 hover:text-white hover:bg-white/5 rounded-md transition-colors">
+                    <iconify-icon icon="lucide:box" width="14" class="text-neutral-500"></iconify-icon>
+                    Ad Vault
+                  </a>
+                  <a href="#editing" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-neutral-300 hover:text-white hover:bg-white/5 rounded-md transition-colors">
+                    <iconify-icon icon="lucide:scissors" width="14" class="text-neutral-500"></iconify-icon>
+                    Unlimited Editing
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#about" class="px-4 py-2 text-xs font-medium text-neutral-400 hover:text-white transition-colors rounded-full hover:bg-white/5">About</a>
+          <a href="#contact" class="px-4 py-2 text-xs font-medium text-neutral-400 hover:text-white transition-colors rounded-full hover:bg-white/5">Contact</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button class="hidden md:block shiny-cta shiny-cta-sm">
+            <span class="flex items-center gap-2">Book Strategy <iconify-icon icon="lucide:arrow-right" width="12" class="opacity-70 group-hover:opacity-100"></iconify-icon></span>
+          </button>
+          
+          <!-- Mobile Toggle -->
+          <button id="mobile-btn" class="md:hidden text-white p-2">
+            <iconify-icon icon="lucide:menu" width="24"></iconify-icon>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-[#020202] transform translate-x-full transition-transform duration-300 flex flex-col p-6 md:hidden">
+      <div class="flex justify-between items-center mb-8">
+        <span class="text-sm tracking-tight text-white uppercase font-display">Menu</span>
+        <button id="close-menu" class="text-neutral-400 hover:text-white"><iconify-icon icon="lucide:x" width="24"></iconify-icon></button>
+      </div>
+      <div class="flex flex-col gap-6 overflow-y-auto">
+        <a href="#" class="text-lg font-medium text-white">Home</a>
+        <div class="flex flex-col gap-3">
+          <span class="text-sm font-semibold text-neutral-500 uppercase tracking-wider">Services</span>
+          <div class="pl-4 border-l border-white/10 flex flex-col gap-4">
+             <div class="flex flex-col gap-2">
+                <span class="text-brand-500 text-xs uppercase font-mono">Business Growth System</span>
+                <a href="#assets" class="text-neutral-400 text-sm">Assets Lab</a>
+                <a href="#brand" class="text-neutral-400 text-sm">Brand Lab</a>
+                <a href="#site" class="text-neutral-400 text-sm">Site Lab</a>
+                <a href="#video" class="text-neutral-400 text-sm">Video Sales Lab</a>
+                <a href="#expansion" class="text-neutral-400 text-sm">Expansion Lab</a>
+             </div>
+             <a href="#studio" class="text-white text-sm">Studio Time</a>
+             <a href="#ads" class="text-white text-sm">Ad Vault</a>
+             <a href="#editing" class="text-white text-sm">Unlimited Editing</a>
+          </div>
+        </div>
+        <a href="#about" class="text-lg font-medium text-white">About</a>
+        <a href="#contact" class="text-lg font-medium text-white">Contact</a>
+      </div>
+      <div class="mt-auto pt-8">
+        <button class="w-full shiny-cta"><span>Book Strategy Call</span></button>
+      </div>
+    </div>
+
+    <main class="relative z-10 pt-32 pb-24">
+      <!-- SECTION 01 — HERO COPY -->
+      <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden w-full mb-24">
+        <div class="absolute inset-0 z-0">
+          <div class="absolute inset-0 grid-lines opacity-30"></div>
+          <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" alt="Cinematic Studio" class="w-full h-full object-cover opacity-20">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#020202] via-[#020202]/80 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-[#020202]/50 to-transparent"></div>
+        </div>
+        <div class="relative z-10 mx-auto max-w-4xl px-6 text-center pt-20">
+          <h1 class="animate-on-scroll font-display text-5xl md:text-7xl leading-[0.95] tracking-tight mb-8 heading-gradient">
+            Services Engineered to<br>Scale Your Brand and Your Revenue
+          </h1>
+          <p class="animate-on-scroll text-lg font-light leading-relaxed text-neutral-400 tracking-tight mb-10 max-w-2xl mx-auto">
+            From one-day asset creation to full-stack marketing systems — PodLab gives founders the tools, structure, and execution needed to grow with clarity and authority.
+          </p>
+          <div class="animate-on-scroll flex flex-col sm:flex-row gap-6 items-center justify-center">
+            <button class="shiny-cta">
+              <span>Book My 15-Minute Call →</span>
+            </button>
+            <a href="#packages" class="text-sm font-medium text-white hover:text-brand-500 transition-colors">
+              See Our Packages →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 — SERVICE MENU COPY -->
+      <section id="packages" class="py-24 mx-auto max-w-7xl px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Studio Time -->
+          <div class="animate-on-scroll glass-panel p-8 rounded-2xl group hover:border-brand-500/30 transition-all duration-300 flex flex-col">
+            <iconify-icon icon="lucide:mic-2" width="32" class="text-brand-500 mb-6"></iconify-icon>
+            <h3 class="text-xl font-semibold text-white mb-2 tracking-tight">Studio Time</h3>
+            <p class="text-sm text-neutral-400 mb-4 leading-relaxed">
+              Cinematic content captured in a $150K founder-optimized studio.
+            </p>
+            <ul class="text-xs text-neutral-500 mb-8 space-y-1 font-mono flex-grow">
+              <li>• Multiple scenes</li>
+              <li>• 4K cameras &amp; Pro audio</li>
+              <li>• Real-time direction</li>
+              <li>• Record once. Repurpose forever.</li>
+            </ul>
+            <a href="#studio" class="text-xs font-mono text-brand-500 hover:text-white transition-colors flex items-center gap-1 uppercase tracking-wider mt-auto">
+              Explore Studio Time
+              <iconify-icon icon="lucide:arrow-right" width="12"></iconify-icon>
+            </a>
+          </div>
+          <!-- Growth System -->
+          <div class="animate-on-scroll glass-panel p-8 rounded-2xl group hover:border-brand-500/30 transition-all duration-300 relative overflow-hidden flex flex-col">
+            <div class="absolute top-4 right-4">
+              <span class="bg-brand-500/10 text-brand-500 text-[10px] px-2 py-1 rounded border border-brand-500/20 uppercase font-mono tracking-wider">Most Popular</span>
+            </div>
+            <iconify-icon icon="lucide:layers" width="32" class="text-brand-500 mb-6"></iconify-icon>
+            <h3 class="text-xl font-semibold text-white mb-2 tracking-tight">Business Growth System</h3>
+            <p class="text-sm text-neutral-400 mb-4 leading-relaxed">
+              The complete brand-to-scale system for $1M–$8M founders.
+            </p>
+            <div class="text-xs text-neutral-500 mb-8 leading-relaxed font-mono flex-grow">
+              Five Labs that install clarity, authority, sales assets, a conversion-engineered website, and monthly marketing momentum.
+            </div>
+            <a href="#growth" class="text-xs font-mono text-brand-500 hover:text-white transition-colors flex items-center gap-1 uppercase tracking-wider mt-auto">
+              See the Growth System
+              <iconify-icon icon="lucide:arrow-right" width="12"></iconify-icon>
+            </a>
+          </div>
+          <!-- Unlimited Editing -->
+          <div class="animate-on-scroll glass-panel p-8 rounded-2xl group hover:border-brand-500/30 transition-all duration-300 flex flex-col">
+            <iconify-icon icon="lucide:scissors" width="32" class="text-brand-500 mb-6"></iconify-icon>
+            <h3 class="text-xl font-semibold text-white mb-2 tracking-tight">Unlimited Editing</h3>
+            <p class="text-sm text-neutral-400 mb-4 leading-relaxed">
+              Your always-on editing and content engine.
+            </p>
+            <ul class="text-xs text-neutral-500 mb-8 space-y-1 font-mono flex-grow">
+              <li>• Drop footage → Get polished</li>
+              <li>• On-brand videos weekly</li>
+              <li>• Zero back-and-forth</li>
+              <li>• Zero chaos</li>
+            </ul>
+            <a href="#editing" class="text-xs font-mono text-brand-500 hover:text-white transition-colors flex items-center gap-1 uppercase tracking-wider mt-auto">
+              View Editing Plans
+              <iconify-icon icon="lucide:arrow-right" width="12"></iconify-icon>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 — STUDIO TIME COPY -->
+      <section id="studio" class="py-24 border-t border-brand-800/20 bg-[#030303]">
+        <div class="mx-auto max-w-7xl px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div class="animate-on-scroll order-2 lg:order-1 relative rounded-2xl overflow-hidden aspect-video border border-white/10 group">
+            <div class="absolute inset-0 bg-brand-500/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+            <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" class="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" alt="Studio">
+          </div>
+          <div class="animate-on-scroll order-1 lg:order-2">
+            <h2 class="font-display text-3xl md:text-4xl heading-gradient mb-6 tracking-tight">
+              Studio Time: Capture Content That Makes You Look Untouchable
+            </h2>
+            <p class="text-neutral-400 mb-8 leading-relaxed font-light">
+              Most studios rent you space. PodLab gives you an advantage. Record inside a fully-controlled, cinematic environment designed for founders who take their brand seriously.
+            </p>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-start gap-3 text-sm text-neutral-300 font-medium">
+                <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                Three Sony FX30 4K cameras
+              </li>
+              <li class="flex items-start gap-3 text-sm text-neutral-300 font-medium">
+                <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                Cinematic lighting optimized for authority
+              </li>
+              <li class="flex items-start gap-3 text-sm text-neutral-300 font-medium">
+                <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                Broadcast-quality audio
+              </li>
+              <li class="flex items-start gap-3 text-sm text-neutral-300 font-medium">
+                <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                Real-time creative direction
+              </li>
+            </ul>
+            <button class="shiny-cta"><span>Book Studio Time →</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 04 — BUSINESS GROWTH SYSTEM COPY -->
+      <section id="growth" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 grid-lines opacity-20 pointer-events-none"></div>
+        <div class="mx-auto max-w-7xl px-6 relative z-10">
+          <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="animate-on-scroll font-display text-4xl md:text-5xl heading-gradient mb-4 tracking-tight">
+              The Business Growth System by PodLab
+            </h2>
+            <p class="animate-on-scroll text-neutral-400 text-lg font-light">
+              Five Labs. One outcome: a brand that scales without you.
+            </p>
+          </div>
+
+          <div class="grid gap-4 max-w-5xl mx-auto">
+            <!-- AssetsLab -->
+            <div id="assets" class="animate-on-scroll glass-panel p-6 md:p-8 rounded-xl flex flex-col md:flex-row gap-6 md:items-center border-l-2 border-l-brand-500 hover:bg-white/[0.02] transition-colors">
+              <div class="shrink-0 text-brand-500 bg-brand-500/10 p-3 rounded-lg border border-brand-500/20">
+                <iconify-icon icon="lucide:focus" width="24"></iconify-icon>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-white tracking-tight">
+                  AssetsLab — Brand Clarity &amp; Avatar Precision
+                </h3>
+                <p class="text-neutral-400 text-sm mt-1 font-light">
+                  Your avatar, messaging system, and content angles. This becomes the foundation for everything.
+                </p>
+              </div>
+            </div>
+            <!-- BrandLab -->
+            <div id="brand" class="animate-on-scroll glass-panel p-6 md:p-8 rounded-xl flex flex-col md:flex-row gap-6 md:items-center border-l-2 border-l-brand-500 hover:bg-white/[0.02] transition-colors">
+              <div class="shrink-0 text-brand-500 bg-brand-500/10 p-3 rounded-lg border border-brand-500/20">
+                <iconify-icon icon="lucide:hexagon" width="24"></iconify-icon>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-white tracking-tight">
+                  BrandLab — Visual Identity That Commands Respect
+                </h3>
+                <p class="text-neutral-400 text-sm mt-1 font-light">
+                  Your brand identity, typography, colors, visual rules, and full identity system. Premium, sharp, unforgettable.
+                </p>
+              </div>
+            </div>
+            <!-- SiteLab -->
+            <div id="site" class="animate-on-scroll glass-panel p-6 md:p-8 rounded-xl flex flex-col md:flex-row gap-6 md:items-center border-l-2 border-l-brand-500 hover:bg-white/[0.02] transition-colors">
+              <div class="shrink-0 text-brand-500 bg-brand-500/10 p-3 rounded-lg border border-brand-500/20">
+                <iconify-icon icon="lucide:layout-template" width="24"></iconify-icon>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-white tracking-tight">
+                  SiteLab — Your Conversion-Engineered Website
+                </h3>
+                <p class="text-neutral-400 text-sm mt-1 font-light">
+                  A website that sells for you: Strategic wireframes, clear messaging, premium UI, and founder-free sales infrastructure.
+                </p>
+              </div>
+            </div>
+            <!-- VideoSalesLab -->
+            <div id="video" class="animate-on-scroll glass-panel p-6 md:p-8 rounded-xl flex flex-col md:flex-row gap-6 md:items-center border-l-2 border-l-brand-500 hover:bg-white/[0.02] transition-colors">
+              <div class="shrink-0 text-brand-500 bg-brand-500/10 p-3 rounded-lg border border-brand-500/20">
+                <iconify-icon icon="lucide:video" width="24"></iconify-icon>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-white tracking-tight">
+                  VideoSalesLab — Your Digital Sales System
+                </h3>
+                <p class="text-neutral-400 text-sm mt-1 font-light">
+                  Five strategic videos: Authority, Origin, Offer, Objections, Social Proof. Prospects now arrive pre-educated and pre-sold.
+                </p>
+              </div>
+            </div>
+            <!-- ExpansionLab -->
+            <div id="expansion" class="animate-on-scroll glass-panel p-6 md:p-8 rounded-xl flex flex-col md:flex-row gap-6 md:items-center border-l-2 border-l-brand-500 hover:bg-white/[0.02] transition-colors">
+              <div class="shrink-0 text-brand-500 bg-brand-500/10 p-3 rounded-lg border border-brand-500/20">
+                <iconify-icon icon="lucide:trending-up" width="24"></iconify-icon>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-white tracking-tight">
+                  ExpansionLab — Consistency That Compounds
+                </h3>
+                <p class="text-neutral-400 text-sm mt-1 font-light">
+                  Your fractional CMO + marketing team: Weekly posting, campaigns, reporting, optimization, and momentum that builds month after month.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 05 — UNLIMITED EDITING COPY -->
+      <section id="editing" class="py-24 bg-[#050505] border-y border-brand-800/20">
+        <div class="mx-auto max-w-4xl px-6 text-center">
+          <div class="animate-on-scroll inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-500/10 text-brand-500 border border-brand-500/20 mb-8">
+            <iconify-icon icon="lucide:film" width="32"></iconify-icon>
+          </div>
+          <h2 class="animate-on-scroll font-display text-4xl md:text-5xl heading-gradient mb-6 tracking-tight">
+            Unlimited Editing by PodLab
+          </h2>
+          <p class="animate-on-scroll text-neutral-400 text-lg mb-12 max-w-2xl mx-auto font-light">
+            Your content engine — built for founders who need consistent output without overwhelm.
+          </p>
+
+          <div class="animate-on-scroll grid grid-cols-2 md:grid-cols-3 gap-6 text-left max-w-2xl mx-auto mb-12">
+            <div class="flex items-center gap-3 text-neutral-300 text-sm font-medium">
+              <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+              Unlimited submissions
+            </div>
+            <div class="flex items-center gap-3 text-neutral-300 text-sm font-medium">
+              <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+              Weekly polished edits
+            </div>
+            <div class="flex items-center gap-3 text-neutral-300 text-sm font-medium">
+              <iconify-icon icon="lucide:check-circle" class="text-brand-500"></iconify-icon>
+              Fast turnaround
+            </div>
+          </div>
+          
+          <div class="animate-on-scroll">
+            <button class="shiny-cta"><span>See Editing Plans →</span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 07 — FINAL CTA COPY -->
+      <section id="contact" class="py-32 relative text-center">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(42,221,27,0.08),transparent_60%)] pointer-events-none blur-3xl"></div>
+        <div class="mx-auto max-w-3xl px-6 relative z-10">
+          <h2 class="animate-on-scroll font-display text-4xl md:text-5xl heading-gradient mb-8 tracking-tight">
+            Ready to Build a Brand That<br>Scales Without You?
+          </h2>
+          <div class="animate-on-scroll flex flex-col sm:flex-row justify-center gap-6 items-center">
+            <button class="shiny-cta">
+              <span>Book My 15-Minute Call →</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="about" class="border-t border-brand-800/20 bg-[#020202] py-12">
+      <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2">
+          <iconify-icon icon="lucide:mic-2" class="text-neutral-600" width="16"></iconify-icon>
+          <span class="text-xs font-semibold text-neutral-500 uppercase tracking-widest">
+            PodLab Systems
+          </span>
+        </div>
+        <p class="text-[10px] text-neutral-700">
+          © 2024 PodLab. All rights reserved. Precision Engineered.
+        </p>
+      </div>
+    </footer>
+  
+</body></html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased dark"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Started — Podcast Application</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Manrope:wght@200..800&amp;family=Michroma&amp;display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+fontFamily: {
+sans: ['Geist', 'sans-serif'],
+display: ['Michroma', 'sans-serif'],
+},
+colors: {
+brand: {
+400: '#5cea4e',
+500: '#2ADD1B', // Neon Green
+600: '#22b515',
+800: '#187a10',
+900: '#104f0b',
+glow: 'rgba(42, 221, 27, 0.15)',
+error: '#ff3333',
+}
+},
+animation: {
+'fade-in': 'fadeIn 0.8s ease-out forwards',
+}
+}
+}
+}
+</script>
+<style>
+:root {
+--bg-dark: #020202;
+--accent-glow: rgba(42, 221, 27, 0.15);
+--brand-primary: #2ADD1B;
+}
+body {
+background-color: var(--bg-dark);
+color: #a3a3a3;
+}
+/* Force stroke width for Lucide icons */
+iconify-icon svg {
+stroke-width: 1.5px !important;
+}
+.glass-panel {
+background: rgba(10, 10, 10, 0.4);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(42, 221, 27, 0.2);
+}
+.glass-panel-dark {
+background: rgba(5, 5, 5, 0.6);
+backdrop-filter: blur(8px);
+border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.glass-panel-accent {
+background: rgba(42, 221, 27, 0.03);
+backdrop-filter: blur(8px);
+border: 1px solid rgba(42, 221, 27, 0.3);
+}
+.glass-panel-error {
+background: rgba(255, 50, 50, 0.03);
+backdrop-filter: blur(8px);
+border: 1px solid rgba(255, 50, 50, 0.1);
+}
+.grid-lines {
+background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+background-size: 40px 40px;
+}
+@keyframes fadeInUp {
+0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+}
+.animate-on-scroll { opacity: 0; }
+.animate-on-scroll.animate { animation: fadeInUp 0.8s ease-out forwards; }
+/* --- SHINY CTA BUTTON EFFECT --- */
+@property --gradient-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-angle-offset { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --gradient-percent { syntax: "<percentage>"; initial-value: 20%; inherits: false; }
+@property --gradient-shine { syntax: "<color>"; initial-value: #ffffff; inherits: false; }
+.shiny-cta {
+--gradient-angle: 0deg;
+--gradient-angle-offset: 0deg;
+--gradient-percent: 20%;
+--gradient-shine: #e0fccf;
+--gradient-base: #2ADD1B;
+--gradient-dark: #104f0b;
+position: relative;
+overflow: hidden;
+border-radius: 9999px;
+padding: 0.875rem 2.5rem;
+font-size: 0.875rem;
+line-height: 1.2;
+font-weight: 600;
+color: #ffffff;
+background: linear-gradient(to bottom, #1d9612, #0f4a08) padding-box,
+conic-gradient(
+from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+transparent 0%,
+var(--gradient-dark) 5%,
+var(--gradient-shine) 15%,
+var(--gradient-dark) 30%,
+transparent 40%,
+transparent 100%
+) border-box;
+border: 1px solid transparent;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.4);
+outline: none;
+transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+cursor: pointer;
+font-family: inherit;
+z-index: 0;
+animation: border-spin 3s linear infinite;
+}
+.shiny-cta:hover {
+background: linear-gradient(to bottom, #22b515, #14610b) padding-box,
+conic-gradient(
+from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+transparent 0%,
+var(--gradient-dark) 5%,
+var(--gradient-shine) 15%,
+var(--gradient-dark) 30%,
+transparent 40%,
+transparent 100%
+) border-box;
+box-shadow: 0 0 20px rgba(42, 221, 27, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+@keyframes border-spin { to { --gradient-angle: 360deg; } }
+.shiny-cta:active { transform: scale(0.98); }
+.shiny-cta::before {
+content: '';
+pointer-events: none;
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+z-index: 0;
+--size: calc(100% - 2px);
+width: var(--size);
+height: var(--size);
+background: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 0.5px, transparent 0) padding-box;
+background-size: 4px 4px;
+mask-image: conic-gradient(from calc(var(--gradient-angle) + 45deg), black, transparent 10% 90%, black);
+border-radius: inherit;
+opacity: 0.3;
+}
+.shiny-cta-sm { padding: 0.5rem 1.25rem; font-size: 0.75rem; }
+.heading-gradient { background: linear-gradient(110deg, #ffffff 45%, #e0fccf 55%, #a6f796 80%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; animation: textShine 6s linear infinite; } @keyframes textShine { to { background-position: -200% center; } }
+/* Form Input Styling */
+.input-base {
+width: 100%;
+background-color: rgba(255, 255, 255, 0.03);
+border: 1px solid rgba(255, 255, 255, 0.1);
+color: white;
+padding: 0.75rem 1rem;
+border-radius: 0.5rem;
+outline: none;
+transition: all 0.2s ease;
+font-size: 0.875rem;
+font-family: 'Geist', sans-serif;
+}
+.input-base:focus {
+border-color: rgba(42, 221, 27, 0.5);
+background-color: rgba(42, 221, 27, 0.02);
+box-shadow: 0 0 0 4px rgba(42, 221, 27, 0.1);
+}
+.input-base::placeholder {
+color: rgba(163, 163, 163, 0.5);
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+entry.target.classList.add("animate");
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1 });
+document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+});
+</script>
+<style>
+#cursor-glow{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;background:radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(42, 221, 27, 0.08), transparent 40%);transition:opacity 0.3s;}
+</style>
+<script>
+document.addEventListener('mousemove',e=>{const g=document.getElementById('cursor-glow');if(g){g.style.setProperty('--x',e.clientX+'px');g.style.setProperty('--y',e.clientY+'px');}});
+</script></head>
+  <body class="relative min-h-screen overflow-x-hidden selection:bg-brand-500/20 selection:text-brand-500">
+    <div id="cursor-glow"></div>
+    <div class="aura-background-component fixed top-0 w-full h-full -z-10 hue-rotate-[240deg]" data-alpha-mask="80" style="mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)">
+      <div data-us-project="1bY8o6HVTI1oxJxuCJEG" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+      <script type="text/javascript">
+        !function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.33/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();
+      </script>
+    </div>
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute inset-0 grid-lines opacity-30"></div>
+      <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,_var(--accent-glow),_transparent_70%)] opacity-40 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle_at_center,_rgba(42,221,27,0.1),_transparent_70%)] opacity-30 blur-3xl"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#020202]/80 backdrop-blur-xl">
+      <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-brand-500/10 border border-brand-500/20 text-brand-500">
+            <iconify-icon icon="lucide:mic" width="18"></iconify-icon>
+          </div>
+          <span class="text-sm tracking-tight text-white uppercase font-display">
+            How It Started
+          </span>
+        </div>
+        <div class="hidden md:flex items-center gap-8 text-xs font-medium text-neutral-400">
+          <a href="#about" class="hover:text-white transition-colors">
+            About the Show
+          </a>
+          <a href="#benefits" class="hover:text-white transition-colors">
+            Why Guest?
+          </a>
+           <a href="#criteria" class="hover:text-white transition-colors">
+            Criteria
+          </a>
+          <a href="#process" class="hover:text-white transition-colors">
+            Process
+          </a>
+        </div>
+        <a href="#apply" class="shiny-cta shiny-cta-sm">
+          <span class="flex items-center gap-2">
+            Apply to Guest
+            <iconify-icon icon="lucide:arrow-right" width="12" class="opacity-70 group-hover:opacity-100"></iconify-icon>
+          </span>
+        </a>
+      </div>
+    </nav>
+
+    <main class="relative z-10 pt-32 pb-24">
+      
+      <!-- SECTION 01 — HERO -->
+      <section class="relative min-h-[85vh] flex flex-col items-center justify-center w-full mb-12 px-6">
+        <div class="relative z-10 max-w-5xl text-center flex flex-col items-center">
+          <div class="mb-6 animate-on-scroll">
+              <span class="text-xs text-brand-500 font-mono uppercase tracking-widest bg-brand-500/10 border border-brand-500/20 px-3 py-1.5 rounded-full">
+                Hosted at PodLab Studios
+              </span>
+          </div>
+          <h1 class="animate-on-scroll font-display text-5xl md:text-7xl leading-[0.95] tracking-tight mb-8 heading-gradient">
+            Be a Guest on <br class="hidden md:block">
+            How It Started
+          </h1>
+          <p class="animate-on-scroll text-lg font-light leading-relaxed text-neutral-400 tracking-tight mb-10 max-w-2xl">
+            A podcast for founders who scaled through grit, resilience, and the belief that success is built — not given.
+          </p>
+          <div class="animate-on-scroll flex flex-col sm:flex-row gap-6 items-center justify-center w-full sm:w-auto">
+            <a href="#apply" class="shiny-cta w-full sm:w-auto justify-center flex">
+              <span>Apply to Be a Guest →</span>
+            </a>
+            <button class="group flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
+                <div class="h-8 w-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-brand-500 group-hover:text-black transition-colors">
+                    <iconify-icon icon="lucide:play" width="12"></iconify-icon>
+                </div>
+                Watch the Show Trailer
+            </button>
+          </div>
+
+          <!-- Hero Visual Placeholder -->
+          <div class="animate-on-scroll mt-16 w-full max-w-4xl relative group cursor-pointer">
+            <div class="absolute -inset-1 bg-gradient-to-r from-brand-500/20 to-brand-800/20 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <div class="relative aspect-[21/9] rounded-xl bg-[#0a0a0a] border border-white/10 overflow-hidden flex items-center justify-center group-hover:border-brand-500/30 transition-all duration-300">
+               <!-- Subtle grid background inside placeholder -->
+               <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#2ADD1B 1px, transparent 1px); background-size: 24px 24px;"></div>
+               <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="flex gap-1 items-end h-12">
+                        <div class="w-1.5 bg-brand-500/50 animate-[pulse-slow_1s_infinite] h-4 rounded-full"></div>
+                        <div class="w-1.5 bg-brand-500/80 animate-[pulse-slow_1.2s_infinite] h-8 rounded-full"></div>
+                        <div class="w-1.5 bg-brand-500 animate-[pulse-slow_0.8s_infinite] h-12 rounded-full"></div>
+                        <div class="w-1.5 bg-brand-500/80 animate-[pulse-slow_1.1s_infinite] h-6 rounded-full"></div>
+                        <div class="w-1.5 bg-brand-500/50 animate-[pulse-slow_0.9s_infinite] h-3 rounded-full"></div>
+                    </div>
+               </div>
+               <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black to-transparent"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 — ABOUT THE SHOW -->
+      <section id="about" class="py-24 bg-[#050505] border-y border-brand-800/10">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="animate-on-scroll">
+                    <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">About The Show</span>
+                    <h2 class="font-display text-3xl md:text-4xl text-white mb-6 tracking-tight leading-tight">
+                        Every Founder Has a Beginning.<br>
+                        <span class="text-neutral-500">This Show Tells Those Stories.</span>
+                    </h2>
+                </div>
+                <div class="animate-on-scroll relative">
+                    <div class="absolute -left-6 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-brand-500/50 to-transparent hidden lg:block"></div>
+                    <p class="text-neutral-300 text-lg leading-relaxed mb-6 font-light">
+                        <strong class="text-white font-semibold">How It Started</strong> features real entrepreneurs who built real businesses. We go deep into the moments that defined them — the failures, the pivots, the breakthroughs, and the lessons that shaped their success.
+                    </p>
+                    <p class="text-brand-500 font-medium text-lg">
+                        It’s not a surface interview. It’s a strategic look at the journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 — DIFFERENTIATION -->
+      <section class="py-24 mx-auto max-w-7xl px-6">
+          <div class="text-center mb-16 max-w-3xl mx-auto relative z-10">
+              <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">The Format</span>
+              <h2 class="animate-on-scroll font-display text-3xl md:text-4xl heading-gradient mb-6 tracking-tight">This Isn’t an Interview. It’s a Masterclass in Your Origin Story.</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+              <!-- Feature 1 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-2xl hover:border-brand-500/30 transition-all duration-300 group">
+                  <iconify-icon icon="lucide:users" width="32" class="text-brand-500 mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></iconify-icon>
+                  <h3 class="text-lg font-semibold text-white mb-3">Founder-to-Founder</h3>
+                  <p class="text-sm text-neutral-400 leading-relaxed font-light">You’re speaking with someone who has built companies — not just a media host. The conversation digs into the real mechanics of business.</p>
+              </div>
+
+              <!-- Feature 2 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-2xl hover:border-brand-500/30 transition-all duration-300 group">
+                  <iconify-icon icon="lucide:zap" width="32" class="text-brand-500 mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></iconify-icon>
+                  <h3 class="text-lg font-semibold text-white mb-3">Crafted for Impact</h3>
+                  <p class="text-sm text-neutral-400 leading-relaxed font-light">The conversation is meticulously designed to extract your defining moments and biggest lessons for maximum listener value.</p>
+              </div>
+
+              <!-- Feature 3 -->
+              <div class="animate-on-scroll glass-panel p-8 rounded-2xl hover:border-brand-500/30 transition-all duration-300 group">
+                  <iconify-icon icon="lucide:cast" width="32" class="text-brand-500 mb-6 opacity-80 group-hover:opacity-100 transition-opacity"></iconify-icon>
+                  <h3 class="text-lg font-semibold text-white mb-3">Elevate Your Brand</h3>
+                  <p class="text-sm text-neutral-400 leading-relaxed font-light">Your episode isn't just content; it's a studio-quality asset. Professional lighting, audio, and editing that makes you look untouchable.</p>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 04 — WHY BE A GUEST -->
+      <section id="benefits" class="py-24 mx-auto max-w-7xl px-6 relative border-t border-brand-800/10 bg-[#030303]">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <div class="animate-on-scroll sticky top-32">
+                 <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">Why Be A Guest?</span>
+                <h2 class="font-display text-4xl text-white mb-6 tracking-tight leading-tight">
+                    Your Story Deserves a Platform That Matches Your Impact.
+                </h2>
+                <p class="text-neutral-400 text-sm mb-8">
+                    We don't just record conversation; we build authority assets. Joining the show places you in a library of verified entrepreneurs.
+                </p>
+                <a href="#apply" class="shiny-cta shiny-cta-sm inline-flex items-center gap-2">
+                    Apply Now <iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon>
+                </a>
+            </div>
+
+            <div class="animate-on-scroll grid grid-cols-1 gap-4">
+                <div class="glass-panel-dark p-6 rounded-xl border border-white/5 flex items-start gap-4 hover:border-brand-500/20 transition-colors">
+                    <div class="mt-1 h-6 w-6 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 shrink-0">
+                        <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-1">Position yourself as a leader</h3>
+                        <p class="text-neutral-500 text-sm">Demonstrate your industry expertise to a dedicated audience.</p>
+                    </div>
+                </div>
+                
+                 <div class="glass-panel-dark p-6 rounded-xl border border-white/5 flex items-start gap-4 hover:border-brand-500/20 transition-colors">
+                    <div class="mt-1 h-6 w-6 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 shrink-0">
+                        <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-1">Build authority through transparency</h3>
+                        <p class="text-neutral-500 text-sm">Sharing the struggles makes the success more believable.</p>
+                    </div>
+                </div>
+
+                 <div class="glass-panel-dark p-6 rounded-xl border border-white/5 flex items-start gap-4 hover:border-brand-500/20 transition-colors">
+                    <div class="mt-1 h-6 w-6 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 shrink-0">
+                        <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-1">Tell your story once — repurpose forever</h3>
+                        <p class="text-neutral-500 text-sm">Use the full episode as a cornerstone content piece.</p>
+                    </div>
+                </div>
+
+                 <div class="glass-panel-dark p-6 rounded-xl border border-white/5 flex items-start gap-4 hover:border-brand-500/20 transition-colors">
+                    <div class="mt-1 h-6 w-6 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 shrink-0">
+                        <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-1">Capture promotional video clips</h3>
+                        <p class="text-neutral-500 text-sm">Get high-resolution assets for your social media channels.</p>
+                    </div>
+                </div>
+
+                 <div class="glass-panel-dark p-6 rounded-xl border border-white/5 flex items-start gap-4 hover:border-brand-500/20 transition-colors">
+                    <div class="mt-1 h-6 w-6 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 shrink-0">
+                        <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-1">Get visibility among Las Vegas entrepreneurs</h3>
+                        <p class="text-neutral-500 text-sm">Connect with a local ecosystem of high-performers.</p>
+                    </div>
+                </div>
+
+                 <div class="glass-panel-dark p-6 rounded-xl border border-white/5 flex items-start gap-4 hover:border-brand-500/20 transition-colors">
+                    <div class="mt-1 h-6 w-6 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 shrink-0">
+                        <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-medium mb-1">Strengthen trust with your audience</h3>
+                        <p class="text-neutral-500 text-sm">Long-form conversation builds deeper rapport than quick ads.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION 05 — CRITERIA -->
+      <section id="criteria" class="py-24 mx-auto max-w-6xl px-6 border-t border-brand-800/10">
+          <div class="text-center mb-16 animate-on-scroll">
+              <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">Criteria</span>
+              <h2 class="font-display text-3xl text-white mb-4 tracking-tight">Are You the Right Fit?</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Right Fit -->
+              <div class="animate-on-scroll glass-panel-accent p-8 rounded-2xl relative overflow-hidden">
+                  <div class="absolute top-0 left-0 w-full h-1 bg-brand-500"></div>
+                  <h3 class="text-xl font-display text-white mb-6 flex items-center gap-3">
+                      <iconify-icon icon="lucide:check-circle-2" class="text-brand-500"></iconify-icon>
+                      Who We're Looking For
+                  </h3>
+                  <ul class="space-y-4">
+                      <li class="flex items-start gap-3 text-sm text-neutral-300">
+                          <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                          Founders running established, growing businesses.
+                      </li>
+                       <li class="flex items-start gap-3 text-sm text-neutral-300">
+                          <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                          A story worth sharing — struggles, wins, transformation.
+                      </li>
+                       <li class="flex items-start gap-3 text-sm text-neutral-300">
+                          <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                          Speakers who operate with integrity and resilience.
+                      </li>
+                       <li class="flex items-start gap-3 text-sm text-neutral-300">
+                          <iconify-icon icon="lucide:check" class="text-brand-500 mt-0.5"></iconify-icon>
+                          Willingness to speak openly and authentically.
+                      </li>
+                  </ul>
+              </div>
+
+              <!-- Not Fit -->
+              <div class="animate-on-scroll glass-panel-error p-8 rounded-2xl relative overflow-hidden">
+                  <div class="absolute top-0 left-0 w-full h-1 bg-red-500/50"></div>
+                  <h3 class="text-xl font-display text-white mb-6 flex items-center gap-3">
+                      <iconify-icon icon="lucide:x-circle" class="text-red-400"></iconify-icon>
+                      Not a Fit If...
+                  </h3>
+                   <ul class="space-y-4">
+                      <li class="flex items-start gap-3 text-sm text-neutral-400">
+                          <iconify-icon icon="lucide:x" class="text-red-400/70 mt-0.5"></iconify-icon>
+                          You only want to pitch or promote a product.
+                      </li>
+                       <li class="flex items-start gap-3 text-sm text-neutral-400">
+                          <iconify-icon icon="lucide:x" class="text-red-400/70 mt-0.5"></iconify-icon>
+                          You lack practical, boots-on-the-ground experience.
+                      </li>
+                       <li class="flex items-start gap-3 text-sm text-neutral-400">
+                          <iconify-icon icon="lucide:x" class="text-red-400/70 mt-0.5"></iconify-icon>
+                          You aren’t willing to go deep into the details.
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 06 — APPLICATION FORM -->
+      <section id="apply" class="py-24 bg-[#050505] relative scroll-mt-16">
+          <div class="absolute inset-0 grid-lines opacity-20 pointer-events-none"></div>
+          <div class="mx-auto max-w-3xl px-6 relative z-10">
+               <div class="text-center mb-12 animate-on-scroll">
+                  <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">Application</span>
+                  <h2 class="font-display text-3xl text-white mb-4 tracking-tight">Apply to Be a Guest</h2>
+                  <p class="text-neutral-400 text-sm">Tell us about yourself. We’ll reach out if it’s a strong fit.</p>
+              </div>
+
+              <form class="animate-on-scroll glass-panel p-8 md:p-12 rounded-2xl space-y-6" onsubmit="event.preventDefault();">
+                  
+                  <!-- Contact Info Grid -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div class="space-y-2">
+                          <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Full Name</label>
+                          <input type="text" class="input-base" placeholder="Jane Doe">
+                      </div>
+                      <div class="space-y-2">
+                          <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Business Name</label>
+                          <input type="text" class="input-base" placeholder="Acme Inc.">
+                      </div>
+                      <div class="space-y-2">
+                          <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Email Address</label>
+                          <input type="email" class="input-base" placeholder="jane@example.com">
+                      </div>
+                      <div class="space-y-2">
+                          <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Phone</label>
+                          <input type="tel" class="input-base" placeholder="+1 (555) 000-0000">
+                      </div>
+                  </div>
+
+                  <div class="space-y-2">
+                      <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Website / Social Links</label>
+                      <input type="text" class="input-base" placeholder="Linkedin, Twitter, or Company URL">
+                  </div>
+
+                  <div class="space-y-2">
+                      <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">What does your business do?</label>
+                      <textarea rows="2" class="input-base resize-none" placeholder="Brief elevator pitch..."></textarea>
+                  </div>
+
+                  <div class="space-y-2">
+                      <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Tell us your entrepreneurial story</label>
+                      <textarea rows="3" class="input-base resize-none" placeholder="How did you start?"></textarea>
+                  </div>
+
+                   <div class="space-y-2">
+                      <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">What challenge shaped you the most?</label>
+                      <textarea rows="2" class="input-base resize-none" placeholder="The pivot, the failure, or the obstacle..."></textarea>
+                  </div>
+
+                   <div class="space-y-2">
+                      <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">What lesson do you want listeners to take away?</label>
+                      <input type="text" class="input-base" placeholder="One core truth...">
+                  </div>
+
+                   <div class="space-y-2">
+                      <label class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Why do you want to be on the show?</label>
+                      <input type="text" class="input-base" placeholder="Your motivation...">
+                  </div>
+
+                  <div class="pt-4">
+                      <button type="submit" class="shiny-cta w-full flex justify-center">
+                          <span>Submit Application</span>
+                      </button>
+                      <p class="text-[10px] text-neutral-600 text-center mt-4">By submitting, you agree to our recording terms and content release policy.</p>
+                  </div>
+              </form>
+          </div>
+      </section>
+
+      <!-- SECTION 07 — PROCESS -->
+      <section id="process" class="py-24 mx-auto max-w-7xl px-6 border-t border-brand-800/10">
+          <div class="text-center mb-16 animate-on-scroll">
+              <span class="text-brand-500 text-xs font-mono uppercase tracking-widest mb-4 block">What Happens Next</span>
+              <h2 class="font-display text-3xl text-white mb-4 tracking-tight">The Road to Release</h2>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+              <!-- Connecting Line (Desktop) -->
+              <div class="hidden md:block absolute top-12 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-500/30 to-transparent z-0"></div>
+
+              <!-- Step 1 -->
+              <div class="animate-on-scroll relative z-10 flex flex-col items-center text-center">
+                  <div class="h-10 w-10 rounded-full bg-[#050505] border border-brand-500 flex items-center justify-center text-brand-500 font-mono text-sm mb-6 shadow-[0_0_15px_rgba(42,221,27,0.3)]">1</div>
+                  <h4 class="text-white font-medium mb-2">Application Review</h4>
+                  <p class="text-xs text-neutral-500 px-2 leading-relaxed">We look at your story and alignment with the show's mission.</p>
+              </div>
+
+               <!-- Step 2 -->
+              <div class="animate-on-scroll relative z-10 flex flex-col items-center text-center">
+                  <div class="h-10 w-10 rounded-full bg-[#050505] border border-white/20 flex items-center justify-center text-white font-mono text-sm mb-6">2</div>
+                  <h4 class="text-white font-medium mb-2">Pre-Interview Call</h4>
+                  <p class="text-xs text-neutral-500 px-2 leading-relaxed">A quick call to set the tone, direction, and key talking points.</p>
+              </div>
+
+               <!-- Step 3 -->
+              <div class="animate-on-scroll relative z-10 flex flex-col items-center text-center">
+                  <div class="h-10 w-10 rounded-full bg-[#050505] border border-white/20 flex items-center justify-center text-white font-mono text-sm mb-6">3</div>
+                  <h4 class="text-white font-medium mb-2">Studio Recording</h4>
+                  <p class="text-xs text-neutral-500 px-2 leading-relaxed">A guided, professional session at the PodLab studio.</p>
+              </div>
+
+               <!-- Step 4 -->
+              <div class="animate-on-scroll relative z-10 flex flex-col items-center text-center">
+                  <div class="h-10 w-10 rounded-full bg-[#050505] border border-white/20 flex items-center justify-center text-white font-mono text-sm mb-6">4</div>
+                  <h4 class="text-white font-medium mb-2">Episode Release</h4>
+                  <p class="text-xs text-neutral-500 px-2 leading-relaxed">We launch the episode and send you clips to share.</p>
+              </div>
+          </div>
+      </section>
+
+      <!-- SECTION 08 — FINAL CTA -->
+      <section class="py-32 relative text-center border-t border-brand-800/10">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(42,221,27,0.05),transparent_60%)] pointer-events-none blur-3xl"></div>
+        <div class="mx-auto max-w-3xl px-6 relative z-10">
+          <h2 class="animate-on-scroll font-display text-4xl md:text-5xl heading-gradient mb-8 tracking-tight">
+            Ready to Share Your Story?
+          </h2>
+           <p class="animate-on-scroll text-lg font-light leading-relaxed text-neutral-400 tracking-tight mb-10 max-w-xl mx-auto">
+             Apply today and let’s capture the moments that made you who you are.
+           </p>
+          <div class="animate-on-scroll flex flex-col sm:flex-row justify-center gap-6 items-center">
+            <a href="#apply" class="shiny-cta">
+              <span>Apply to Be a Guest →</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand-800/20 bg-[#020202] py-12">
+      <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2">
+          <iconify-icon icon="lucide:mic" class="text-neutral-600" width="16"></iconify-icon>
+          <span class="text-xs font-semibold text-neutral-500 uppercase tracking-widest">
+            How It Started
+          </span>
+        </div>
+        <p class="text-[10px] text-neutral-700">
+          © 2024 How It Started. All rights reserved. Recorded at PodLab.
+        </p>
+      </div>
+    </footer>
+  
+</body></html>
